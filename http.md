@@ -1,3 +1,15 @@
+
+
+
+
+
+
+
+
+
+
+# http学习
+
 我本来是打算学习koa，然后写点学习总结。但是当教程中介绍到app.listen(...)时，其中提到app.listen(3000)是http.createServer(app.callback()).listen(3000);的“语法糖”,就让我对http.createSever()方法产生兴趣。于是就开始了追根溯源之旅~
 
 **httpcreateServer()**
@@ -30,7 +42,7 @@
     }).listen(8080, "localhost");
 
 
-但这仍旧是node.js已经封装好的方法，而我想知道的如何用最原生的语言创建一个http服务器。而在阅读完很多不同语言的实现web服务器的文档后，发现比较核心的有这么几个专业名词。
+但这仍旧是node.js已经封装好的方法，而我想知道的如何用最原生的语言创建一个http服务器。而在阅读完很多不同语言的实现web服务器的文档后，发现比较核心的有这么2个专业名词。
 
 **超文本传送协议HTTP**
 
@@ -54,4 +66,5 @@ http有以下几个值得注意的特点:
 
 ![socket](https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=17baf4c7d739b60059c307e588395e4f/d000baa1cd11728b45647b06cafcc3cec3fd2c4c.jpg)
 
-socket本质是编程接口(API)，对TCP/IP的封装，TCP/IP也要提供可供程序员做网络开发所用的接口，这就是Socket编程接口；HTTP是轿车，提供了封装或者显示数据的具体形式；Socket是发动机，提供了网络通信的能力。
+socket本质是编程接口(API)，对TCP/IP的封装，TCP/IP也要提供可供程序员做网络开发所用的接口，这就是Socket编程接口；做个比喻就是：HTTP是轿车，提供了封装或者显示数据的具体形式；而Socket是发动机，提供了网络通信的能力。
+其中的很多函数可以自己查阅资料。
