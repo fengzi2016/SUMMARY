@@ -62,4 +62,95 @@ koa是express框架的发展，相对与express，koa更轻便和健壮。不同
 - 
 
 
+
+1. 需求分析
+ 用户系统：
+            游客：阅读
+            用户：阅读，发表，评论
+            管理员：审批用户，控制热点
+            超级管理员：管理管理员
+  
+ 种类：
+        前端
+        后端
+        安卓
+        产品
+        设计
+
+
+ 2. 实体
+
+ 用户
+ 文章
+ 评论 
+ 种类
+ <!-- 视频
+ 图片 -->
+ 
+
+3. 数据库内容
+ 种类表：
+        content
+
+ 用户表：
+        user_id  [key]
+        user_name
+        user_email [key]
+        user_pwd
+        user_avatar_url
+        user_role
+        user_activation_code
+        user_status
+  
+文章表:
+        article_id
+        article_title
+        article_content
+        <!-- article_time -->
+        article_author_id
+        article_ category
+
+评论表:
+        comment_id
+        comment_content
+        comment_time
+        comment_author_id
+
+用户-文章关系表:
+      id
+      user_id
+      article_id
+      time
+
+用户-评论关系表：
+     id
+     user_id
+     article_id
+     comment_id
+     time
+文章-评论关系表：
+    id
+    article_id
+    comment_id
+    time
+
+
+4. API
+
+0. 注册||激活码，登录
+1. 获取主页
+2. 获取各类别页面
+3. 获取个人中心
+4. 获取某篇文章的详情
+5. 获取某篇文章的评论
+6. 删除某篇文章
+7. 删除某篇评论
+8. 修改个人中心
+
+
+
+
+
+
+
   
