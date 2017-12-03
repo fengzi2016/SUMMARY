@@ -4,7 +4,7 @@
 
 1. **兼容性**
 
-
+![兼容性](https://wx4.sinaimg.cn/mw690/006P0MECgy1fm3r09es50j31880bw3yy.jpg)
 很显然，Opera Mini就没有实现audio标签，而且毕竟audio是HTML5的新特性，虽然大多数浏览器的最新版本都实现了，但是无法保证所有用户都使用了浏览器最新版本。
 
 2. **格式支持**
