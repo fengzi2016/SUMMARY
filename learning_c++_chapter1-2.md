@@ -103,3 +103,60 @@ for (directionT dir  = North;dir <= West;dir = directionT(dir+1))
 ```
 
 
+- <string>接口 
+```c++
+    string str1 = "Hello Word!";
+    int numChars =str.length();//返回字符串长度
+    str.at(pos) == str[pos]; 
+    //两个都返回字符串中下标为pos的字符
+    str.substr(pos,len);
+    //返回从pos位置开始的长度为len的字符串，str并没有改变，如果len没给，则到最后一个字符
+    str.find(ch,pos)
+    //返回从pos位置开始找等于ch字符的下标，如果没有给pos，则第一个字符开始找。如果没出现，则返回string::npos这个定值
+    str.find(pattern,pos)//和上面一样，只不过是找pattern这个字符串
+    str.insert(pos,txt)//将txt从str的pos位置插入
+    str.replace(pos,count,txt)//将str从pos位置开始的count长度的字符串用txt代替
+    
+
+```
+
+- <strutils.h>头文件
+```c++
+    #ifndef _strutils_h
+    #define _strutils_h
+    #inclde "genlib.h"
+    string ConvertToLowerCase(string s);//将字母转为小写
+    string ConvertToUpperCase(string s);//将字母转为大写
+    int StringToInteger(string s);//将字符串转换成数字
+    string IntegerToString(int n);//将数字转换成字符串
+    string RealToString(double d);//将浮点数转换成字符串
+    double StringToReal(string s);//将字符串转换成浮点数
+    #endif
+    
+```
+- 转换成C++字符串
+```c++
+    string str = string("Hello");
+```
+- 标准输入输出文件<iostream.h>
+
+- 获取和修改文件内容
+```c++
+  ifstream infile;//输入文本流变量
+  ofstream outfile;//输出文本流变量
+  infile.open("jabberwocky.txt");//打开文件，参数是c风格的
+ //如果 文件名是变量表示的:
+ string str = ...;
+ infile.open(str.c_str());//将变量str转换成c风格的字符串
+//如果 打开文件失败:
+if(infile.fail())Error("Could not open file")
+infile.clear();
+//数据处理完毕，关闭文件
+infile.close();
+
+cin>> //输入  
+cout<<//输出： 数字，字符串，数组第一个元素，不能直接输出结构体，要根据属性输出
+cerr //报错
+
+
+```
