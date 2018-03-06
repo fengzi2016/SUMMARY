@@ -160,3 +160,145 @@ cerr //报错
 
 
 ```
+
+```c++
+#include<string>
+ infile.get()//在输入流中获取一个字符，返回一个int类型的数值，如果输入流中没有则返回EOF
+ infile.unget()//将读入的最后一个字符退回到输入流上
+ getline(infile,str)
+ //是全局方法，不用点号(.)来调用，作用是将输入流中的下一行复制到str字符串中
+ inflie>>var 
+ // 从输入流中读取一个值放入变量var中
+ outfile.put(ch)
+ //将ch这个字符放入到输出流outfile中
+ outfile << expr
+ //将expr写入到输出流中
+``` 
+
+```c++
+#include<cctype>
+isupper(ch) 
+//大写字母返回ture
+islower(ch)
+//小写字母返回true
+isalpha(ch)
+//英文字母返回true
+isdigit(ch)
+//阿拉伯数字返回true
+ispunct(ch)
+//标点符号返回true
+isspace(ch)
+//字符能在屏幕里展现空白符，比如“空格，\t,\n,\f,\v”返回true
+isprint(ch)
+//字符为可打印字符（包括空格）返回true
+toupper(ch);tolower(ch);
+//将ch转换成大，小写字母
+
+#include<cmath>
+fabs(x) 
+//返回绝对值
+floor(x)
+// 向下取整
+ceil(x)
+//向上取整
+fmod(x,y)
+//返回x/y的浮点余数
+sqrt(x)
+//返回x的开方
+pow(x,y)
+//返回x的y次方
+exp(x)
+//返回e的x次方
+log(x)
+//返回x的自然对数
+sin(theta)
+cos(theta)
+atan(x)
+
+```
+
+- 第四章 抽象数据类型
+
+- Vector class 向量类
+```c++
+    #include "vector.h"
+    Vector<int> vec;//声明一组数字类型的向量
+   vec.size()//返回vec向量的元素数量
+   vec.isEmpty()//如果为空返回true
+   vec.getAt(index)==vec[index]
+   //返回vec中下标为index的值
+   vec.setAt(index,value)
+   //将vec中index位置的值设置为value,如果index超出下标界限则报错
+   vec.add(value) 
+   //在vec尾部添加一个值
+   vec.insertAt(index,value)
+//在vec中index位置的值之前插入一个值value
+vec.removeAt(index)
+//删除index位置上的值
+vec.clear()
+//清空vec
+vec.iterator()
+//返回所有元素的迭代总和
+```
+
+- Grid class 格子类
+
+```c++
+    Grid<double> matrix(3,2);
+    matrix.numRows()
+    matrix.numCols()
+    //返回matrix的行数和列数
+    matrix.getAt(row,col)
+    matrix.setAt(row,col,value)
+    matrix.resize(rows,cols)
+    //重新定义matrix的大小，之前的内容都被丢弃
+    matrix.iterator()//返回一个遍历元素的迭代器
+```
+- stack 堆类
+```c++
+    Stack<int> sta;
+    sta.size();
+    sta.isEmpty();
+    sta.push(value);//在堆顶添加一个元素
+    sta.pop()//从堆顶弹出一个元素
+    sta.peek()//返回堆顶的值但是不弹出
+    sta.clear()
+```
+- Queue class 队列类
+```c++
+#include"queue.h"
+ Queue<int> que;
+ que.size()
+ que.isEmpty()
+ que.enqueue(value) //向队尾推入一个值
+ que.dequeue()//将队首的值拿出并返回
+ que.peek()//返回队首值但不拿出
+ que.clear()
+```
+
+- Map class map类
+```c++
+    Map<string> dictionary;
+    dictionary.size();
+    dictionary.isEmpty();
+    dictionary.put(key,value)==dictionary[key]=value//在dictionary中添加或者重置键为key的值
+    dictionary.remove(key)
+    dictionary.containKey(key)//存在这个键返回true
+    dictionary.clear();
+    dictionary.iterator();
+    
+```
+- Lexicon class 词汇类
+```c++
+#include "Lexicon.h"
+Lexicon english("EnglishWords.dat");
+english.size()//返回english这个词汇里有多少个词
+english.isEmpty();
+english.add(word);//给english词汇表添加一个词，如果已经存在则操作无效
+english.addWordsFromFile(name)//将文件名字为name中的所有词添加到english中，其中文件必须是每一个词一行
+if(english.containsWords(word))...//判断word是否在english这个词汇表里面，返回bool
+if(english.containsPrefix(prefix))//判断词汇表里面是否有哪个词以prefix开头，返回bool
+english.clear();
+english.iterator();
+
+```
