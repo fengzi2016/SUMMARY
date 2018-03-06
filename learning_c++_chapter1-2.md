@@ -302,3 +302,44 @@ english.clear();
 english.iterator();
 
 ```
+
+- Scanner class 扫描类
+```c++
+    Scanner scanner;
+    scanner.setInput(str)
+ //输入被扫描字符串
+    scanner.setInpt(stream)
+ //输入被扫描输入流
+    scanner.hasMoreTokens()
+//如果还有额外的tokens返回true
+    scanner.nextToken()
+// 返回下一个token
+    scanner.saveToken(token)
+//将token存储在目前扫描string的状态位置上
+    setSpaceOption(option)
+    getSpaceOpition()
+//option可以为：Scanner::PreserveSpaces Scanner::IgnoreSpaces 设置是将多个空白符返回成一个空白符还是直接忽视所有空白符
+
+setNumberOption(option)
+getNumberOption()
+//option可选：
+//Scanner::ScanNumbersAsLetters
+//Scanner::ScanNumbersAsIntegers
+//Scanner::ScanNumbersAsReals
+//将设置扫描到的数字字符串视为什么，默认为文字
+
+setStringOption(option)
+getStringOption()
+//option：Scanner::ScanQuotesAsPunctuation Scanner::ScanQutesAsStrings设置是否将引号作为单个token，默认引号为标点符号
+
+setBrancketOption(option)
+getBracketOption()
+//option：Scanner::ScanBracketsAsPunctuation Scanner::ScanBracketsAsTag 设置是否将HTML的标签设置为单个token，默认为符号
+
+- foreach
+```c++
+    foreach(string words in english)
+```
+
+
+```
