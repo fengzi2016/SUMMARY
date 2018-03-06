@@ -337,9 +337,9 @@ getBracketOption()
 //option：Scanner::ScanBracketsAsPunctuation Scanner::ScanBracketsAsTag 设置是否将HTML的标签设置为单个token，默认为符号
 
 - foreach
+
 ```c++
     foreach(string words in english)
 ```
 
 
-```
