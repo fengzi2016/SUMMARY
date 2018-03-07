@@ -335,7 +335,17 @@ getStringOption()
 setBrancketOption(option)
 getBracketOption()
 //option：Scanner::ScanBracketsAsPunctuation Scanner::ScanBracketsAsTag 设置是否将HTML的标签设置为单个token，默认为符号
-
+```
+- iterator的使用方法
+```c++
+    Lexicon::Iterator iter = english.iterator();
+    while(iter.hasNext()){
+        string word = iter.next();
+        if(word.length()==2){
+            cout << word << endl;
+        }
+    }
+```
 - foreach
 
 ```c++
