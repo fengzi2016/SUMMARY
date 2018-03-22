@@ -24,4 +24,155 @@
 
 
 
+### 什么是视图层？
+
+说到视图层，这里就要先了解一下目前的前端开发的构架模式：MVVM 。
+
+> MVVM是 Model-View-ViewModel的缩写。在MVVM架构下，View 和 Model 之间并没有直接的联系，而是通过ViewModel进行交互，Model 和 ViewModel 之间的交互是双向的， 因此View 数据的变化会同步到Model中，而Model 数据的变化也会立即反应到View 上。
+
+其中View层就是视图层。在HTML5还没有风靡的时候，Web端的构架模式一般都是用JAVA的Model-View-Controller 即 模型-视图-控制器。其中
+- View UI布局展示数据
+- Model 管理数据
+- Controller 响应用户操作，并将Model更新到View上
+
+而这个框架慢慢被前端抛弃是因为有以下痛点：
+
+- 大量相同DOM API被重复调用，操作冗余，降低渲染性能，加载速度
+- Model 和 View层频繁发生变化都需要开发者用原生代码进行两层同步
+
+而利用MVVM则可以通过ViewModel 进行双向数据绑定，开发者主要关心业务逻辑就行。
+
+### 什么是单页应用？
+
+> 单页Web应用（single page web application，SPA），就是只有一张Web页面的应用，是加载单个HTML 页面并在用户与应用程序交互时动态更新该页面的Web应用程序。 ----百度百科
+
+这样说可能还不是很清楚，我们拿传统页面和单页面做个对比：
+
+传统页面:
+![多页](https://wx3.sinaimg.cn/large/006P0MECly1fply93z3e6j30il0a074m.jpg)
+
+单页应用：
+ ![单页](https://wx2.sinaimg.cn/large/006P0MECly1fply93hicqj30jh05x74f.jpg)   
+
+
+>单页应用的特点: 
+>- **控制器前置**，单页应用将路由处理放在浏览器端，即在浏 览器端直接响应浏览器地址的变化，分发到对应的路由，向用户呈现对应的界面。
+>- **以小块组件为功能元件**，类似于传统网页中的 Ajax 组件，单页应用以小的组件为功能元件，在路由变化时，不再刷新整个页面，而是组合这些小的组件，替换变化的部分。
+>- **数据层前置**，与 Ajax 组件一个明显的区别是，单页应用在浏览器端通常有一层实实在在的数据层，而服务端则退化成了完全的数据 API。浏览器端的数据层会封装服务端 API，供上层的视图层调用。
+
+现在我们组的很多项目就是单页应用，单页应用有这几个好处:
+ 
+ - 无刷新体验
+ - 完全的前端组件化
+ - API共享
+ - 组件共享
+
+ 如果想了解更多单页的，可以戳[这里](http://tinyambition.com/Single-Page-App-Break/%E7%AC%AC01%E7%AB%A0%20%E4%BD%95%E4%B8%BA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8.html)
+
+
+现在我们大概理解了Vue.js是什么以及它介绍中的一些扩展和特点，那么开始来了解它怎么使用。
+
+在官方文档里面对它的各种方法有详尽的解释和例子，这里因为只是引入我解释一些常用的方法和API。
+
+### 如何开始？
+ - 如果你想使用Vue.js ，最简单的就是用js内联引入一个在线包
+```js
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+```
+但是我们一般是工程化的项目，所以正常情况下是用 npm 下载它的库:
+
+```
+$ npm install vue
+```
+然后再用vue-cli脚手架，来创建你的vue项目。vue-cli可用于快速搭建大型单页应用，该工具为现代化的前端开发工作流提供了开箱即用的构建配置。
+```node
+# 全局安装 vue-cli
+$ npm install --global vue-cli
+# 创建一个基于 webpack 模板的新项目
+$ vue init webpack my-project
+# 安装依赖，走你
+$ cd my-project
+$ npm run dev
+```
+
+### vue这个库提供了什么给我们？
+
+我之前也没有详细分析到底Vue提供了什么，写这个教程进行分析后发现，其实还是很好理解的。
+
+对于开发者来说，vue提供了一个Vue类，我们都知道，使用类之前都要进行实例化，Vue也不例外,而要当我们要利用vue开发时，需要给Vue传入一个参数，这个参数的数据类型是对象。下面创建了一个没有任何赋值的Vue实例，但是它本身应该有一些初始化属性和方法，这些可能要去看源码了解。
+```js
+    var vm = new Vue({})
+```
+
+那么一个Vue实例有需要传入的参数需要什么属性呢？
+
+比较常用的以下几个：
+
+```js
+    var vm = new Vue({
+        el: '#example',//绑定的DOM元素
+        data:{} //数据对象。数据改变时视图被重新渲染
+        //生命周期：
+        created: function () {
+            // 表现：key: function
+            // 表示一个实例被创建之后执行代码
+            // `this` 指向 vm 实例
+        }
+        //还有mounted、updated 和 destroyed等等
+        computed: {
+             //表现： key:{...function}
+            // 内部函数放在HTML标签上，每次初始或者更新时渲染到这个函数绑定到的DOM元素就会触发对应方法
+           
+            reversedMessage: function () {}
+            //...
+         }
+        methods: {
+            //表现：key:{...function}
+            //内部函数放在HTML标签上,每次触发到某个被绑定的DOM元素的某些事件就会触发对应方法
+            reversedMessage: function () {}
+        }
+        watch: {
+             //表现:key:{...function}
+             //当某些数据随着其它数据变化时需要用到watch
+             //想监听哪个数据，则函数名词与data对象中的属性名相同
+                keyName: function () {},
+        }
+
+
+    })
+
+```
+
+这是一个vue实例最基本的几个使用方法和API，下面我们学习一下HTML的模板语法：
+
+```html
+    <span>Message: {{ msg }}</span> 
+    <!--msg是data中设置的数据，这里就将数据直接和HTML相结合-->
+    <!-- 也可以用 JavaScript 表达式 -->
+     <span>{{ number + 1 }}</span>
+
+```
+
+在vue.js的模板语法中，最常见的还是v- 指令，比如
+```html
+    <div v-bind:id="dynamicId"></div>
+```
+指令的职责是，当表达式的值改变时，将其产生的连带影响，响应式地作用于 DOM。也就是说页面上凡是需要动态响应的数据和事件都需要用v- 指令将其与vue实例绑定。
+
+所以上面这个例子的意思是说： div的id属性值是 vue实例中 data中 dynamicId属性的值，而如果你想改变ID，只需要在vue实例中做一些修改就能同步改变这个DOM 的id。
+
+比较常用的指令有：
+-  v-bind: ，缩写":" ,它的值一般是data数据和computed里的函数，或者当有父子组件中的数据传递时的props；:后面接的可以是dom的原有属性，也可以是自定义名称
+-  v-on:，缩写"@",它的值一般是methods里的方法；@后面接的一般是dom的监听事件比如click，当有父子组件中的事件传递时的自定义事件名
+- v-html ,将数据直接转化为DOM的html，这个时候数据一般是 字符串类型的标签值
+- v-for,当数据是数组时，会对数据进行遍历
+
+
+
+
+
+
+
+
 
