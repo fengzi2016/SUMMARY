@@ -105,7 +105,7 @@ $ npm run dev
     var vm = new Vue({})
 ```
 
-那么一个Vue实例有需要传入的参数需要什么属性呢？
+那么一个Vue实例需要传入的参数需要什么属性呢？
 
 比较常用的以下几个：
 
@@ -164,15 +164,245 @@ $ npm run dev
 
 比较常用的指令有：
 -  v-bind: ，缩写":" ,它的值一般是data数据和computed里的函数，或者当有父子组件中的数据传递时的props；:后面接的可以是dom的原有属性，也可以是自定义名称
--  v-on:，缩写"@",它的值一般是methods里的方法；@后面接的一般是dom的监听事件比如click，当有父子组件中的事件传递时的自定义事件名
+- v-on:，缩写"@",它的值一般是methods里的方法；@后面接的一般是dom的监听事件比如click，当有父子组件中的事件传递时则是自定义事件名
 - v-html ,将数据直接转化为DOM的html，这个时候数据一般是 字符串类型的标签值
 - v-for,当数据是数组时，会对数据进行遍历
+- v-if ,决定DOM元素是否存在
+- v-show,决定DOM元素会展现，即使不展现会占位
+- v-model,经常在input表单出现，v-model的值就是表单的值
+
+现在我们知道了HTML和JS是如何联系的，但是Vue如何控制CSS呢？
+
+在处理CSS的时候，如果一个DOM的样式在某段时间或者会因为某个事件发生变化，则应该先在CSS文件中定义多个样式和对应选择器，再通过以下方式进行样式切换
+
+```html
+    <div class="static"
+     v-bind:class="{ active: isActive, 'text-danger': hasError }">
+    </div>
+```
+其中 active和text-danger是class，isActive和hasError是data中的属性值，一般情况下是布尔值。
+
+以上介绍了vue的基本用法，比较高级和详细的用法在官方文档里更详细，我就不再说了。
+
+### 一个用webpack打包，用ninja做脚手架的vue.js项目目录
+
+![vue](https://wx2.sinaimg.cn/large/006P0MECly1fpm1j0mv7wj308g0g7jrj.jpg)
+
+
+下面对各个文件夹进行解释：
+- build和config ：webpack配置文件
+- mock:虚拟数据和路由定义
+- server:部署到服务器上后的服务器代码
+- src:vue业务逻辑代码，静态文件，图片等
+- template:放置渲染结果的ejs和html容器，最后所有的js都被引入里面对应的html
 
 
 
 
+实际在开发时因为业务逻辑比较多，我们经常把每个组件分开来写，再用export default暴露出来，再通过import进行组件的组合，也就是组件化与模块化一起使用。
+所以 真正在写项目的时候，一个.vue文件应该是这样的：
+```html
+<!-- 只允许有一个根容器，这里是第一个div -->
+<template>
+     <div> 
+        <he></he>
+        <div >xxx</div>
+   </div>
+</template>
+
+<script>
+import header from "./header.vue";
+import footer from "./footer.vue";
+import show from "./show.vue";
+import Cookie from "cookie";
+// 几个公共处理文件或者库
+import marked from "mark";
+import API from "api";
+import pattern from "dateFormatter";
+//export default暴露这个组件
+export default {
+  data() {
+    return {
+      id: 0,
+      share: {
+        type: Object
+      },
+      items: [],
+      isAuthor: false
+    };
+  },
+// 引入其它组件 ，其它组件内部和这个例子一样
+  components: {
+    he: header,
+    foot: footer,
+    show: show
+  },
+  computed: {
+    compiledMarkdown: function() {
+      return marked(this.share.share || "", { sanitize: false });
+    }
+  },
+  mounted() {
+    var api = window.location.pathname;
+    this.id = api.split("/")[2]; //把 id props 给子组件
+    API.getView(this.id).then(value => {
+      this.share = value.shares;
+      this.items = value.comments;
+      if (this.share.username === Cookie.getCookie("username")) {
+        this.isAuthor = true;
+      }
+    });
+  },
+  methods: {
+    fetchComments() {
+      API.getView(this.id).then(res => {
+        this.items = res.comments;
+      });
+    },
+  
+  }
+};
+</script>
+
+<!-- css -->
+<style lang="scss" module>
+html {
+  position: absolute;
+  right: 10vw;
+  top: 7vh;
+  width: fit-content;
+}
+
+}
+</style>
+```
+其中像 < he >这个标签就是我们自己定义的组件，之后被import进来，组合使用，是不是觉得很自由？之后我们也可以命名标签了噢！
+
+要使得vue项目能用webpack打包，有一个loader（处理器）不得不提，即 vue-loader。
+
+我们可以看出，.vue文件内部是html,css,javascript的组合，为什么浏览器可以运行.vue文件呢？vue-loader起了很大作用。
+
+vue-loader 是一个 webpack 的 loader，可以将上面那个例子的 Vue 组件转换为 JavaScript 模块，即:
+
+> Vue组件默认分成三部分，< template >、< script > 和 < style >，我们可以把一个组件要有的html，js，css写在一个组件文件中，而vue-loader，会帮助我们去处理这个vue组件，把其中的html，js，css分别编译处理，最终打包成一个模块。
+
+比如在上面那个例子中，vue-loader会告诉webpack要用scss-loader来处理style，用html-loader来处理template。
+
+**而vue-loader是怎么实现的呢？**
+
+ > loader本质就是接收字符串(或者buffer)，再返回处理完的字符串(或者buffer)的过程。webpack会将加载的资源作为参数传入loader方法，交于loader处理，再返回。
+
+如果想自己实现一个loader,相关教程可以看官方文档["编写一个loader"](https://doc.webpack-china.org/contribute/writing-a-loader)
+
+在真实的项目中，我们经常会遇到各种数据或者说状态在不同组件中传递，这个时候我们就需要了解一些数据传递的方法和API。
+
+先理解什么是父子组件，举个栗子：
+```html
+    <!-- 在app.vue里 -->
+    <father></father>
 
 
+    <!-- 在father.vue里 -->
+    <template>
+        <div>
+            <son></son>
+        </div>
+    </template>
 
 
+    <!-- 在son.vue里 -->
+    <template>
+        <div>
+            <grandson></grandson>
+        </div>
+    </template>
 
+```
+
+在这个例子中有father,son,grandson三种关系。
+
+父传子：
+如果father组件想传递数据给son，则在son的vue实例中添加一个**props**属性，承接father的属性值。举个例子：
+```html
+    <!-- 在father.vue中 -->
+    <!-- data是在father组件中设置的 -->
+    <son data = "x"></son>
+   
+    <!-- 在son.vue中 -->
+    <script>
+        export default {
+           
+            props:["data"] //如果是my-message ，则应该改成myMessage
+             data: function () {
+             return { counter: this.data }
+            }
+            //将父组件传过来的属性值 赋给子组件的局部属性count
+        },
+    </script>
+
+    <!-- 如果你觉得data会动态变化则需要动态绑定 -->
+    <son v-bind:data = "parentMsg"></son>
+   
+```
+
+
+子传父：利用Vue 的自定义事件系统，每个 Vue 实例都实现了事件接口，即：
+
+- 使用 $on(eventName) 监听事件
+
+- 使用 $emit(eventName, optionalPayload) 触发事件
+
+```html
+    <div id="counter-event-example">
+  <p>{{ total }}</p>
+  <button-counter v-on:increment="incrementTotal"></button-counter>
+  <button-counter v-on:increment="incrementTotal"></button-counter>
+</div>
+```
+
+```js
+    Vue.component('button-counter', {
+  template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
+  data: function () {
+    return {
+      counter: 0
+    }
+  },
+  methods: {
+    incrementCounter: function () {
+      this.counter += 1
+      this.$emit('increment') //emit（冒泡）触发父组件监听的increment方法
+    }
+  },
+})
+
+new Vue({
+  el: '#counter-event-example',
+  data: {
+    total: 0
+  },
+  methods: {
+    incrementTotal: function () {
+      this.total += 1
+    }
+  }
+})
+```
+
+
+非父子间数据或事件传输
+```js
+ //new 一个新的vue实例
+var bus = new Vue()
+// 触发组件 A 中的事件，第二个参数为触发的事件需要的参数，1就是id
+bus.$emit('id-selected', 1)
+// 在组件 B 创建的钩子中监听事件
+bus.$on('id-selected', function (id) {
+  // ...
+})
+```
+
+
+现在大多数基础会用到的基本介绍完毕，官方文档对高级一点的使用有非常详尽的教程和例子。
+
+## 最后总结一个原则: 凡是会动态变化的，都应该v-on,或者v-bind；除了特殊情况不允许在vue里面用JS直接操作HTML DOM，一定是数据驱动视图的。
