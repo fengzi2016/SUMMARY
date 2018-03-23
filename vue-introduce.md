@@ -49,9 +49,11 @@
 这样说可能还不是很清楚，我们拿传统页面和单页面做个对比：
 
 传统页面:
+
 ![多页](https://wx3.sinaimg.cn/large/006P0MECly1fply93z3e6j30il0a074m.jpg)
 
 单页应用：
+
  ![单页](https://wx2.sinaimg.cn/large/006P0MECly1fply93hicqj30jh05x74f.jpg)   
 
 
@@ -356,20 +358,26 @@ vue-loader 是一个 webpack 的 loader，可以将上面那个例子的 Vue 组
 - 使用 $emit(eventName, optionalPayload) 触发事件
 
 ```html
-    <div id="counter-event-example">
-  <p>{{ total }}</p>
-  <button-counter v-on:increment="incrementTotal"></button-counter>
-  <button-counter v-on:increment="incrementTotal"></button-counter>
+<!-- father.vue里面 -->
+  <div id="counter-event-example">
+    <son v-on:increment="incrementTotal"></son>
 </div>
+
+
+ <!-- son.vue里面 -->
+ <button v-on:click="incrementCounter">{{ counter }}</button>
+
+ 
 ```
 
 ```js
-    Vue.component('button-counter', {
-  template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
-  data: function () {
-    return {
-      counter: 0
-    }
+  //son.vue里面
+   export default {
+ 
+    data: function () {
+      return {
+        counter: 0
+      }
   },
   methods: {
     incrementCounter: function () {
@@ -379,8 +387,8 @@ vue-loader 是一个 webpack 的 loader，可以将上面那个例子的 Vue 组
   },
 })
 
-new Vue({
-  el: '#counter-event-example',
+//father.vue里面
+export default {
   data: {
     total: 0
   },
@@ -398,9 +406,18 @@ new Vue({
 ```js
  //new 一个新的vue实例
 var bus = new Vue()
-// 触发组件 A 中的事件，第二个参数为触发的事件需要的参数，1就是id
-bus.$emit('id-selected', 1)
-// 在组件 B 创建的钩子中监听事件
+//grandson.vue里面
+// 触发组件father 中的事件，第二个参数为触发的事件需要的参数，1就是id
+export default{
+  data:{}
+  mouted(){
+    //渲染后
+    bus.$emit('id-selected', 1)
+  }
+}
+
+//father.vue里面
+//监听事件
 bus.$on('id-selected', function (id) {
   // ...
 })
