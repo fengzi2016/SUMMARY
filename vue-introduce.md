@@ -1,6 +1,6 @@
 # Vue introduce
 
-今天我来介绍一个用vue框架写的项目的形成，使用与部署。
+今天我来介绍一个用vue框架写的项目的形成与使用。
 
 ## Vue是什么? 
 
@@ -321,7 +321,8 @@ vue-loader 是一个 webpack 的 loader，可以将上面那个例子的 Vue 组
 
 在这个例子中有father,son,grandson三种关系。
 
-父传子：
+**父传子：**
+
 如果father组件想传递数据给son，则在son的vue实例中添加一个**props**属性，承接father的属性值。举个例子：
 ```html
     <!-- 在father.vue中 -->
@@ -346,7 +347,9 @@ vue-loader 是一个 webpack 的 loader，可以将上面那个例子的 Vue 组
 ```
 
 
-子传父：利用Vue 的自定义事件系统，每个 Vue 实例都实现了事件接口，即：
+**子传父**：
+
+利用Vue 的自定义事件系统，每个 Vue 实例都实现了事件接口，即：
 
 - 使用 $on(eventName) 监听事件
 
@@ -390,7 +393,8 @@ new Vue({
 ```
 
 
-非父子间数据或事件传输
+**非父子间数据或事件传输**:
+
 ```js
  //new 一个新的vue实例
 var bus = new Vue()
