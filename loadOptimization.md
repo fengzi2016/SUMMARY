@@ -5,6 +5,9 @@
 2. [从零开始React服务器渲染](http://www.alloyteam.com/2017/01/react-from-scratch-server-render/)
 3. [ReactDOMServer](http://www.css88.com/react/docs/react-dom-server.html)
 4. [vue-lazy-component](https://github.com/xunleif2e/vue-lazy-component/blob/master/src/VueLazyComponent.vue)
+
+
+## 方法：
 1. **使用textarea标签包裹HTML/JS/CSS代码**, 当作textarea的value值, 在页面渲染的时候实际并没有渲染到DOM树上, 而是与图片懒加载类似, 当textarea标签出现或即将出现在用户视野时, 将textarea中的HTML代码取出, 用innerHTML动态插入到DOM树中, 如有必要使用正则取出js/css代码动态执行.
 例子：
 
@@ -29,15 +32,14 @@
 
 步骤:
    - npm install compression
+
     ```js
         var compression = require('compression')
         var app = express();
         app.use(compression());
     ```
 
-3. **图片压缩**，减小图片大小
-
-推荐：“色彩笔压缩工具”
+3. **图片压缩**，减小图片大小， 推荐：“色彩笔压缩工具”
 
 4. **懒加载**
 
@@ -297,7 +299,7 @@
 还有vue组件懒加载
 
 
-- 服务器渲染
+5. 服务器渲染
 原理:将htmlDOM渲染以及数据先在服务器端处理，再通过传字符串的方式传到客户端
 
 react版本：
