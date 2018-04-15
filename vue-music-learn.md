@@ -77,3 +77,4 @@ config.js //放置公共路由参数
 - 语义化代码：把返回的状态放在api/config中，比如如果正确的话是 ERR_OK，再import 进vue中，判断code是否为ERR_OK
 - slot 标签放在 base 中的基本组件，slot的内容为其被引进的.vue的标签内部dom
 - 监听窗口resize()事件可以保持slider随着窗口大小变化
+- 语义化代码：一些不变的字符串要给它们赋给变量名，比如:const HOT_NAME = "热门"
