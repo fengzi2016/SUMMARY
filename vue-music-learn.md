@@ -71,6 +71,21 @@ config.js //放置公共路由参数
     }
 ```
 
+## 构造出类封装代码
+例子：
+```js
+    //common文件夹里
+    export default class Singer {
+        constructor({id,name}){
+            this.id = id;
+            this.name = name;
+        }
+    }
+    //使用地方
+    import Singer from './common/singer.js'
+    let singer = new Singer({id,name});
+
+```
 ## vue
 
 - 一般不在created等生命周期内写大量函数内容，而是把函数放在methods，再在生命周期函数内 调用this._xxx()
@@ -78,3 +93,5 @@ config.js //放置公共路由参数
 - slot 标签放在 base 中的基本组件，slot的内容为其被引进的.vue的标签内部dom
 - 监听窗口resize()事件可以保持slider随着窗口大小变化
 - 语义化代码：一些不变的字符串要给它们赋给变量名，比如:const HOT_NAME = "热门"
+
+
