@@ -59,6 +59,7 @@ config.js //放置公共路由参数
 - babel-ployfill babel补丁，es6API转译 
 ## 封装dom.js 添加class
 ```js
+    //处理DOM的class添加
     export function addClass(el,className){
         if(hasClass(el,className)) return;
         let newClass = el.className.split(" ")
@@ -68,6 +69,16 @@ config.js //放置公共路由参数
     export function hasClass(el,className){
         let reg = new RegExp('(^|\\s)'+className+'(\\s|$)')
         return reg.test(el.className)
+    }
+    //处理DOM的data- 各种属性
+    export function getData(el,name,val){
+        const prefix = 'data-';
+        name = prefix + name;
+        if (val) {
+            return el.setAttribute(name,val);
+        } else {
+            return el.getAttribute(name);
+        }
     }
 ```
 
