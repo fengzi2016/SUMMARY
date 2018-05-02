@@ -105,5 +105,12 @@ config.js //放置公共路由参数
 - 监听窗口resize()事件可以保持slider随着窗口大小变化
 - 语义化代码：一些不变的字符串要给它们赋给变量名，比如:const HOT_NAME = "热门"
 - vue-lazy-load 懒加载插件
-
+- 当然数据只是为了在多个方法中共享而不需要被vue监听时，应该放在created(){}中
+    比如:
+    ```js
+        created(){
+            this.touch={}
+        }
+    ```
+- method等中公有方法放上面，私有方法放下面
 
