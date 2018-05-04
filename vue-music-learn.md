@@ -113,4 +113,15 @@ config.js //放置公共路由参数
         }
     ```
 - method等中公有方法放上面，私有方法放下面
+- vue滑动进入和退出动画
+
+    ```css
+
+        .slide-enter-active,.slide-leave-active{
+            transition:all 0.3s            
+        }
+        .slide-enter,.slide-leave-to {
+            transform:translate3d(100%,0,0)
+        }
+ ``
 
