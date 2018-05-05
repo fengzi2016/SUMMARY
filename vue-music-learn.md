@@ -82,7 +82,8 @@ config.js //放置公共路由参数
     }
 ```
 
-## 构造出类封装代码
+## 构造出类封装代码。
+### 作用：直接处理从服务器返回的数据，使得这个类里的数据可以直接应用到Dom对象渲染，减少代码量
 例子：
 ```js
     //common文件夹里
@@ -97,6 +98,25 @@ config.js //放置公共路由参数
     let singer = new Singer({id,name});
 
 ```
+
+## bind css
+### 作用：绑定动态背景图片等css样式
+```html
+    <div  :style = "bgStyle"></div>
+```
+```js
+    //this.baImage()返回了一个图片地址
+    //1.
+    computed:{
+        bgStyle(){
+            return `background-image:url(${this.bgImage()})`
+        }
+    }
+    //给layer DOM动态添加一个滑动效果、
+    this.$refs.layer.style['transform']=`translated3d(0,${translateY}px,0)`;
+```
+
+
 ## vue
 
 - 一般不在created等生命周期内写大量函数内容，而是把函数放在methods，再在生命周期函数内 调用this._xxx()
