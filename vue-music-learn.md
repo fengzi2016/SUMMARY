@@ -115,6 +115,44 @@ config.js //放置公共路由参数
     //给layer DOM动态添加一个滑动效果、
     this.$refs.layer.style['transform']=`translated3d(0,${translateY}px,0)`;
 ```
+## 添加对css的浏览器前缀的js处理
+根据浏览器的支持情况得到响应的css前缀
+```js
+    //dom.js
+    let elementStyle = document.createElement('div').style;
+    //前缀只适合vue
+    let vendor = (() => {
+        let transformNames = {
+            webkit: 'webkitTransform',
+            Moz: 'MozTransform',
+            O: 'OTransform',
+            ms: 'msTransform',
+            standard: 'transform'
+        }
+    })
+    for(let key in transform){
+        if(elementStyle[transformNames[key]] !== undefined) {
+            return key;
+        }
+    }
+    return false;
+})()
+
+export function prefixStyle(style) {
+    if(vendor ===  false) {
+        return false;
+    }
+    if(vender === 'standard') {
+        return style;
+    }
+    return vendor + style.charAt(0).toUpperCase() + style.substr(1);
+}
+
+// xxx.vue
+import {prefixStyle} from 'xxxx'
+const transform = prefixStyle('transform')
+this.$refs.layer.style[transform] = `translate3d(0,${translateY}px,0)`;
+```
 
 
 ## vue
