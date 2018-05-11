@@ -116,7 +116,7 @@ config.js //放置公共路由参数
     this.$refs.layer.style['transform']=`translated3d(0,${translateY}px,0)`;
 ```
 ## 添加对css的浏览器前缀的js处理
-根据浏览器的支持情况得到响应的css前缀
+根据浏览器的支持情况得到响应的css前缀                                                                         
 ```js
     //dom.js
     let elementStyle = document.createElement('div').style;
