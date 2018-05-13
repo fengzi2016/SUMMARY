@@ -1,6 +1,5 @@
-# React 知识
 
-## Single Page Application 单页面应用SPA
+# Single Page Application 单页面应用SPA
 
 ### 定义：
 
