@@ -93,9 +93,10 @@ let Game = (function() {
     }
     function renderTpl(num) {
         let tpl,
-            coordArr = [],
+            coordArr = []
             htm = '',
             arr = [...Array(num).keys()]
+            
             
     }
 })

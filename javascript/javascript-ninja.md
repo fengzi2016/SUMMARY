@@ -228,3 +228,23 @@
 3. 几种特殊情况，箭头函数和bind方法
 - 箭头函数没有自己的this ，所以如果它是在函数里被创建的，它的this指的是这个函数，但如果它在对象里被创建的，并且被赋值给对象的一个属性，则它的this 在普通模式下是window, 在严格模式下是undefined.
 - 用bind方法可以创建一个新的有一样内容的函数，并且this一定是这个新函数。
+
+## 与第三章的rest联系
+```js
+    function test1() {
+        let sum = arguments.reduce((accumulator,value) => {
+            accumulator += value;
+            return accumulator;
+        },0);
+        return sum;
+    }
+    //等同于
+    function test2(...rest) {
+    let sum = rest.reduce((accumulator,value)=>{
+        accumulator += value;
+        return accumulator;
+    },0)
+    return sum;
+    }
+
+```
