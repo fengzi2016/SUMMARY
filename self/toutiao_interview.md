@@ -24,7 +24,12 @@
 1. 必须将日期字符串转化成Date实例才能调用valueOf()，getTime()方法
 2. Date.parse()方法可以传字符串也可以传Date实例
 
-### 2. class 实现EventEmit
+2. 时间戳转化为日期
+
+```js
+  new Date('10000000000')
+```
+### 2. class 
 
 ```js
     class EventEmit {
@@ -47,7 +52,7 @@
             this._events[event] = callbacks;
             return this;
         }
-        emit(...args) {
+        trigger(...args) {
             let event = args[0];
               //取 args 这个数组中的从下标1到最后的元素赋给数组[]
             let callbacks = this._events[event];
@@ -71,3 +76,80 @@
 
 刷题练习
 
+
+```js
+ const where = () => {
+    //获取调用函数名字
+    //不严格模式下可以 arguments.caller.name;
+   let reg = /\s+at\s(\S+)\s\(/g;
+   let str = new Error().stack.toString()
+   let res = reg.exec(str) && reg.exec(str)
+    return res[0]&&res[1];
+ }
+ var myRe = /d(b+)d/g;
+ var str = "cdbbdbsbz,cdbbdbsbz";
+ var myArray = myRe.exec(str);
+ var b = myRe.test(str);
+ var m = str.match(myRe);
+ var s = str.search(myRe);
+ var r = str.replace(myRe,'$1')
+ var sp = str.split(myRe);
+ console.log('a:'+myArray[0])
+ console.log('b:'+b);
+ console.log('m:'+m);
+ console.log('s:'+s);
+ console.log('r:'+r);
+ console.log('sp:'+sp)
+ //分解路由
+ const parseQueryString = function (query) {
+    
+let myRe = /\?\w*(=\w*)*((&\w+){1}(=\w(?!#)*)*)*/g;
+     let myRe = /\?\S*(=\w*)*((&\w+){1}(=\w(?!#)*)*)*/g;
+    let result = {};
+    let r = myRe.exec(query);
+    if(r!==null){
+        let myArr =r[0] ;
+        let qu = myArr.split('?')[1];
+       qu = qu.split('&');
+         qu.map((item)=>{
+            let arr = item.split('=');
+            if(arr.length==2)
+        result[arr[0]] = arr[1] || '';
+           else result[arr[0]] = null;
+        })
+   }
+    return result;
+    
+}
+console.log(parseQueryString('  https://scriptoj.com/problems/?offset=&limit=100#name=jerry '));
+console.log(parseQueryString('https://scriptoj.com/problems/#?offset=10&limit=100'))
+```
+
+4. 源码 反码 补码
+1. 源码 
+8位二进制表表示的数字
+
+如 2 的源码为 0000 0010，第一位为符号位，0为正号，1为负号
+
+2. 反码
+
+源码除了符号位按位取反再加+
+
+如 2 的源码 0000 0010
+
+除了符号位按位取反: 0111 1101
+
+再加一: 0111 1110
+
+
+**如果+1后超出了8位，舍去第九位，再在末尾加1**
+
+如 101000001==01000010  
+
+3. 补码
+
+反码+1
+
+如 2 的反码 0111 1110 
+
+     补码 0111 1111
