@@ -7,8 +7,7 @@
 3. 正则表达式实现匹配字符串
 4. bind,this
 5. 原码补码反码
-6. 实现array
-7. 保证ajax拉取的数据在用户点击按钮前能获取到
+
 
 ### 1. date时间戳
 1. 日期转化为时间戳
@@ -121,11 +120,11 @@ let myRe = /\?\w*(=\w*)*((&\w+){1}(=\w(?!#)*)*)*/g;
     return result;
     
 }
-console.log(parseQueryString('  https://scriptoj.com/problems/?offset=&limit=100#name=jerry '));
+console.log(parseQueryString('https://scriptoj.com/problems/?offset=&limit=100#name=jerry '));
 console.log(parseQueryString('https://scriptoj.com/problems/#?offset=10&limit=100'))
 ```
 
-4. 源码 反码 补码
+### 4. 源码 反码 补码
 1. 源码 
 8位二进制表表示的数字
 
@@ -153,3 +152,14 @@ console.log(parseQueryString('https://scriptoj.com/problems/#?offset=10&limit=10
 如 2 的反码 0111 1110 
 
      补码 0111 1111
+
+
+### 5. bind this
+
+bind: fn.bind(obj,arguments)生成一个新的函数，其内容是fn的拷贝，并且它的content上下文是obj,所以它指定的this 是obj
+
+
+
+
+
+

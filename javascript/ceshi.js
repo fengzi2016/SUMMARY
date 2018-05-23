@@ -58,7 +58,7 @@
 // // console.log(date.getTime())
 // // String.prototype.add = function(){
 // //     console.log(this)
-// //     console.log(this+'2')
+//     console.log(this+'2')
    
 // // }
 
@@ -106,4 +106,5 @@
 // })
 // event.emit('go')
 
-console.log(new Date(1111111))
+//console.log(new Date(1111111))
+
