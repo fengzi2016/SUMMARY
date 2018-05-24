@@ -7,8 +7,8 @@
     - 状态：已完毕
         - [针对新手入门的vue简介](./javascript/vue-introduce.md)
     - 状态：待更新
-         - [vue高级用法深度学习](./javascript/vue-deep-learning-note.md) 
-          - [vue音乐APP学习总结](./javascript/vue-music-learn.md)
+        - [vue高级用法深度学习](./javascript/vue-deep-learning-note.md) 
+        - [vue音乐APP学习总结](./javascript/vue-music-learn.md)
         - [javascript ninja 总结](./javascript/javascript-ninja.md)          
 - web
     - 状态：已完毕
@@ -47,3 +47,6 @@
         - [神经网络初步学习](./algorithm/sense-net.md)
         - [c++ 语法和数据结构学习](./algorithm/c++.md)
      - 状态：待更新
+- interview 
+    - 状态： 已完毕
+        - [2018夏季头条笔试难题](./interview/toutiao_interview.md)
