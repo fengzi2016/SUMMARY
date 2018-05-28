@@ -108,3 +108,32 @@
 
 //console.log(new Date(1111111))
 
+
+var isAnagram = function(s, t) {
+    let obj = {};
+    let o= {};
+    if(s.length != t.length) return false;
+    let st = s.split('');
+    let tt = t.split('');
+    st.forEach((val)=>{
+        if(obj[val]){
+            obj[val]++;
+        }else {
+            obj[val] = 0;
+        }
+    });
+    tt.forEach((val)=>{
+        if(o[val]){
+            o[val]++;
+        }else {
+            o[val] = 0;
+        }
+    });
+    console.log(obj)
+    console.log(o)
+    if(obj == o) return true;
+    else return false;
+};
+
+let b = isAnagram("anagram","nagaram");
+console.log(b)
