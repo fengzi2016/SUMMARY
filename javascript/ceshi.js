@@ -117,22 +117,25 @@ var isAnagram = function(s, t) {
     let tt = t.split('');
     st.forEach((val)=>{
         if(obj[val]){
-            obj[val]++;
+            ++obj[val] ;
         }else {
-            obj[val] = 0;
+            obj[val] = 1;
         }
     });
     tt.forEach((val)=>{
         if(o[val]){
-            o[val]++;
+            ++o[val];
         }else {
-            o[val] = 0;
+            o[val] = 1;
         }
     });
-    console.log(obj)
-    console.log(o)
-    if(obj == o) return true;
-    else return false;
+   
+    for(let i in obj) {
+        if(!o[i] ||  o[i] != obj[i]){
+            return false;
+        }
+    }
+    return true;
 };
 
 let b = isAnagram("anagram","nagaram");
