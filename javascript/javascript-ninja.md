@@ -248,3 +248,36 @@
     }
 
 ```
+
+## 6. generator and promise
+
+generator 的简单用法：
+
+```js
+    function* weaponGenerator() {
+        yield "Katana";
+        yield "Wakizashi";
+        return 'return';//不起作用
+    }
+    //第一种输出写法
+    for(let weapon of weaponGenerator()){
+        //weapon 为 value
+        assert(weapon !== undefined , weapon);
+        //"Katana"
+        //"Wakizashi"
+    }
+    //第二种输出写法
+    const weaponIterator = weaponGenerator();
+    const result1 = weaponIterator.next();
+    // result1 = {value:"Katana",done:false}
+    const result2 = weaponIterator.next();
+    //result2 = {value:"Wakizashi",done:false}
+    const result3 = weaponIterator.next();
+    //result3 = {value:undefined,done:true}
+    
+
+```
+- 调用generator函数后从第一个yield开始算，之后每次调用.next()就唤醒函数，碰到下一个yield就停止并且挂起，下次调用.next()时从挂起的地方开始。
+- 当遇到return 和 没有代码执行后就会返回一个{value:undefined,done:true}对象，并且return后面的代码不起作用
+- 如果yield表达式后面接的还是个generator()函数（假设为函数A），则下次.next()重新唤醒函数的时候就进入函数A中，在函数A中以同样的规则运行。
+- generator函数的上下文和标准函数不同，当执行完一次yield后，此函数的上下文会从函数栈弹出，但是它弹出时的状态被开始调用函数而使用的承接的变量（即weaponIterator）记录着，所以下一次唤醒generator时，就直接根据记录找到上次停止的地方开始执行，函数栈最顶端放置的还是generator函数上下文，只是执行状态不同。

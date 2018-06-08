@@ -141,11 +141,21 @@
 // let b = isAnagram("anagram","nagaram");
 // console.log(b)
 
-function grid() {
-    +function() {
-       var i = 1;
-    }();
+// function grid() {
+//     +function() {
+//        var i = 1;
+//     }();
     
-   console.log(i)
-}
-grid();
+//    console.log(i)
+// }
+// grid();
+  function* weaponGenerator() {
+        yield "Katana";
+        yield "Wakizashi";
+        return 'return';
+    }
+    //第一种输出写法
+    for(let weapon of weaponGenerator()){
+        console.log(weapon)
+        // assert(weapon !== undefined , weapon);
+    }
