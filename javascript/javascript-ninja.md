@@ -281,3 +281,4 @@ generator 的简单用法：
 - 当遇到return 和 没有代码执行后就会返回一个{value:undefined,done:true}对象，并且return后面的代码不起作用
 - 如果yield表达式后面接的还是个generator()函数（假设为函数A），则下次.next()重新唤醒函数的时候就进入函数A中，在函数A中以同样的规则运行。
 - generator函数的上下文和标准函数不同，当执行完一次yield后，此函数的上下文会从函数栈弹出，但是它弹出时的状态被开始调用函数而使用的承接的变量（即weaponIterator）记录着，所以下一次唤醒generator时，就直接根据记录找到上次停止的地方开始执行，函数栈最顶端放置的还是generator函数上下文，只是执行状态不同。
+
