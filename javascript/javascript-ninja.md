@@ -251,7 +251,7 @@
 
 ## 6. generator and promise
 
-generator 的简单用法：
+### generator 的简单用法：
 
 ```js
     function* weaponGenerator() {
@@ -282,3 +282,111 @@ generator 的简单用法：
 - 如果yield表达式后面接的还是个generator()函数（假设为函数A），则下次.next()重新唤醒函数的时候就进入函数A中，在函数A中以同样的规则运行。
 - generator函数的上下文和标准函数不同，当执行完一次yield后，此函数的上下文会从函数栈弹出，但是它弹出时的状态被开始调用函数而使用的承接的变量（即weaponIterator）记录着，所以下一次唤醒generator时，就直接根据记录找到上次停止的地方开始执行，函数栈最顶端放置的还是generator函数上下文，只是执行状态不同。
 
+## 7. 面向对象的原型链
+
+### new 函数名() 和  直接调用 函数名()的区别
+例子：
+```js
+    function Ninja() {}
+    Ninja.prototype.swingSword = function() {
+        return true;
+    }
+    const ninja1 = Ninja();
+    //此时ninja1 == undefined
+    const ninja2 = new Ninja();
+    //此时 ninja2 是一个实例化Ninja类生成的对象，并且有swingSword属性，并且可以调用这个属性
+    //即: (ninja2 && ninja2.swingSword && ninja2.swingSword()) == true
+```
+### 属性重写
+
+```js
+    function Ninja() {
+        this.swung = false;
+        //[1]
+        this.swingSword = function() {
+            return !this.swung;
+        }
+    }
+    //[2]
+    Ninja.prototype.swingSword = function() {
+        return this.swung;
+    }
+    const ninja = new Ninja();
+```
+
+**如果 Ninja()函数中有 swingSword属性，那么当用ninja2去拿swingSword属性时，拿的是函数内部[1]的，而不是原型的[2]。**
+
+### ES5 用原型链实现继承的做法
+```js
+    function Person(){}
+    Person.prototype.dance = function(){}
+
+    function Ninja(){}
+    Ninja.prototype = new Person();
+
+    Object.defineProperty(Ninja.prototype,'constructor',{
+        enumerable:false,
+        value:Ninja,
+        writable:true
+    })
+    //防止出现 ninja.constructor !== Ninja 却 === Person 的问题
+
+    var ninja = new Ninja()
+
+```
+
+
+
+### 改变原型后实例的变化
+
+实例跟踪的原型是 “ 实例化 和 某个原型改变 ” 之间，即 改变之前 的原型。
+
+例子：
+```js
+    function Ninja() {
+        this.swung = true;
+    }
+    const ninja1 = new Ninja();
+    
+    Ninja.prototype.swingSword = function() {
+        return this.swung;
+    }
+    //此时 ninja1.swingSword()存在,可以被调用
+    Ninja.prototype = {
+        pierce:function() {
+            return true;
+        }
+    }
+   // 此时 ninja1.swingSword()存在，可以被调用
+   const ninja2 = new Ninja();
+   //此时ninja2的原型是{pierce:function() {return true;}},即改变后的原型
+
+```
+
+### ES6的class
+
+包含生成和继承，原理还是 原型链，class只不过是个语法糖，只是内层将class转变成了原型链模式
+
+```js
+    class Person() {
+        constructor(name) {
+            this.name = name;
+        }
+        dance() {
+            return true;
+        }
+    }
+    class Ninja extends Person() {
+        constructor(name,weapon) {
+            super(name);
+            this.weapon = weapon;
+        } 
+        wieldWeapon() {
+            return true;
+        }
+    }
+    var ninja = new Ninja('Yoshi','Wakizashi');
+    //此时 ninja有 Ninja 类 和 Person类的所有方法和属性
+    // ninja instanceof Person === true
+    // ninja instanceof Ninja == true
+```
