@@ -390,3 +390,97 @@
     // ninja instanceof Person === true
     // ninja instanceof Ninja == true
 ```
+
+
+
+## 9. collections - Array，Map，Set
+
+
+
+### Array
+- **特点**
+    - 超过数组范围的访问将返回 **undefined**
+    - 如果数组长度(array.length = x)被直接赋值扩大，没有赋值的元素将为 **undefined**
+    - 如果数组长度被直接赋值减小，除了长度内的元素，其它元素将直接被删除
+
+- **方法**：
+    - push , pop - 尾部
+    - unshift , shift - 头部
+    - find,findIndex - 寻找
+    - IndexOf - 是否存在于，下标为多少
+    - splice(index,length,...insertArgs) -如果没有后面的参数就是删除,如果有则是删除后插入参数【替代】
+    - map,filter,reduce
+    - sort，回调函数返回-1，从小到大；返回1，从大到小
+
+- **在对象Object里利用数组的方法**
+
+    push的例子：
+
+    ```js
+        let obj = {
+        length:0,
+        add: function(value) {
+            Array.prototype.push.call(this,value);
+            //Array.prototype.push.apply(obj,[...args])
+        }
+    }
+    obj.add('lijia');
+    obj.add('xian');
+    console.log(obj)
+    //{ '0': 'lijia', '1':'xian',length: 2, add: [Function: add] }
+    
+    ```
+### Map
+
+注意：*函数和数组都是一种对象*
+
+- 意义： **解决对象存储只能把key当作string的缺陷**
+- 特点：**Map的key可以为任何对象**
+- 方法：
+    - size 长度
+    - clear() 清空
+    - has(key)， 判断Map中key是否存在，返回bool
+    - set(key,value) 设置map键和键值
+    - get(key) 获取key值
+    - values() 返回所有的键值
+    - keys() 返回所有的键
+    - for(let item of map){},这将遍历整个map,每个item是一个只有2个元素的数组，item[0] 为key, item[1] 为value
+- 例子
+    ```js
+        const ninjas = new Map();
+        const ninja1 = {name:'C'};
+        const ninaj2 = {name:'M'};
+        ninjas.set(ninja1,{homeIsland:'Honshu'});
+        ninjas.set(ninja2,{homeIsland:'Hokhaido'});
+        console.log(ninjas.get(ninja1).homeIsland)
+        //Honshu
+    ```
+### Set
+
+- 特点：**Set中的所有值都是独一无二的**
+- 意义：**用来去重，取交和并集比较容易**
+- 方法：
+    - has(value),判断value值是否存在，返回bool
+    - add(value),从尾部添加value值，如果set集中已经存在，则不会产生任何影响
+    - for...of 遍历
+    - size 元素数量【长度】
+    - delete(value) 删除
+    - entries() 方法返回一个新的迭代器对象 ，这个对象的元素是类似 [value, value] 形式的数组
+- 实例化：
+```js
+    //实例化时参数必须为数组
+    const numbers = new Set(['1','2','3']);
+
+```
+
+
+
+
+
+
+
+
+
+
+
+

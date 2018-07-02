@@ -149,13 +149,23 @@
 //    console.log(i)
 // }
 // grid();
-  function* weaponGenerator() {
-        yield "Katana";
-        yield "Wakizashi";
-        return 'return';
-    }
-    //第一种输出写法
-    for(let weapon of weaponGenerator()){
-        console.log(weapon)
-        // assert(weapon !== undefined , weapon);
-    }
+//   function* weaponGenerator() {
+//         yield "Katana";
+//         yield "Wakizashi";
+//         return 'return';
+//     }
+//     //第一种输出写法
+//     for(let weapon of weaponGenerator()){
+//         console.log(weapon)
+//         // assert(weapon !== undefined , weapon);
+//     }
+// let obj = {
+//     length:0,
+//     add: function(value) {
+//         Array.prototype.push.call(this,value);
+//     }
+// }
+// obj.add('lijia');
+// obj.add('i love lijia')
+const numbers = new Set(['m','p','3']);
+console.log(numbers.entries())
