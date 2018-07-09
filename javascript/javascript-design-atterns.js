@@ -57,3 +57,31 @@ pubsub.publish("index/newMessage",'hello,are you still there?')
 
 // Observer例子：Observer.html
 
+// Singleton单例模式
+let mySingleton = (function () {
+    let instance;
+    function init() {
+        function privateMethod () {
+            console.log('i am private');
+        }
+        let privateVariable = 'i am also private';
+        let privateRandomNumber = Math.random();
+        return {
+            publicMethod : function () {
+                console.log('i am publicMethod');
+            },
+            publicProperty: 'i am also public',
+            getRandomNumber : function () {
+                return privateRandomNumber;
+            }
+        }
+    }
+    return {
+        getInstance : function() {
+            if(!instance) {
+                instance = init();
+            }
+            return instance;
+        }
+    }
+})();
