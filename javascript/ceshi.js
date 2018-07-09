@@ -167,5 +167,7 @@
 // }
 // obj.add('lijia');
 // obj.add('i love lijia')
-const numbers = new Set(['m','p','3']);
-console.log(numbers.entries())
+// const numbers = new Set(['m','p','3']);
+// console.log(numbers.entries())
+let arr = [1,2,3]
+console.log(Array.prototype.slice.call(arr,1))

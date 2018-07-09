@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" id="filckrSearch">
+        <input type="text" name="tag" id="query">
+        <input type="submit" name="submit" value="submit">
+    </form>
+    <div id="lastQuery"></div>
+    <div id="searchResults"></div>
+    <script id="resultTemplate" type="text/html">
+        <% _.each(items,function(item)){ %>
+        <li><p><img src = "<%= item.media.m %>" /><p></li>
+        <% }); %>
+    </script>
+</body>
+<script>
+    (function ($) {
+        //预编译模板并用闭包缓存它
+        let resultTemplate = _.template($("#resultTemplate"));
+        //订阅新搜索tags主题
+        $.subscribe("/search/tags",function (e,tags) {
+            $("#searchResults").html("Search for:"+tags+"");
+        })
+        //订阅新搜索结果主题
+        $.subscribe("/search/resultSet",function (e,result) {
+            $("#searchResults").append(resultTemplate(result));
+            $("#searchResults").append(complied_template(reuslt));
+        })
+        //提交搜索请求，并在/search/tags 主题上发布tags
+        $("#flickrSearch").submit(function(e){
+            e.preventDefault();
+            let tags = $(this).find("#query").val();
+            if(!tags) return;
+            $.publish("/search/tags",[$.trim(tags)]);
+        })
+        //订阅发布的新tag，并且使用tag发起请求，一旦返回数据，将数据发布给应用程序的其它使用者
+        $.subscribe("/search/tags",function(e,tags) {
+            $.getJSON(...agrs);
+            $.publish('/search/resultSet',response)
+        })
+    })
+</script>
+</html>
