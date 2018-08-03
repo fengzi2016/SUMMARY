@@ -1,10 +1,10 @@
 /*Publish / Subscribe模式（发布/订阅）
 / topics =  {
-    [
+   topic1: [
         {token:token,func:func},
         {token:token,func:func}
     ],
-    [...]
+   topic2:  [...]
  } 
  每个数组是一个主题topic
 */
@@ -93,10 +93,10 @@ let mySingleton = (function () {
 })();
 
 /*Mediator （中介模式）
-    基本实现： topics = [
-        "topic1":{context:context,callback:fn},
+    基本实现： topics = {
+        "topic1":[{context:context,callback:fn},...],
         ...
-    ]
+    }
 */
 var mediator = (function() {
     var topics = [];
@@ -114,7 +114,7 @@ var mediator = (function() {
         let args ;
         args = Array.prototype.slice.call(arguments,1);
         topics[topic].forEach(t => {
-            t.callback.apply(p.context,args);
+            t.callback.apply(t.context,args);
         });
         return this;
     }
