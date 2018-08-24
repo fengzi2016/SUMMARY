@@ -473,14 +473,85 @@
 
 ```
 
+## 10. Regular expression
+
+### [正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions)
+
+## 11. 模块化
+
+### 实现模块化的要求：
+
+- hiding implementation details and defining module interface （隐藏实现细节，定义模块接口）
+
+### 当没有AMD和CommonJS时如何实现模块化？
+- 实现"hiding implementation details"利用函数作用域
+- 实现"defining module interface"利用返回对象和闭包保持函数变量私有
+
+```js
+//module pattern
+ const MouseCountModule = function() {
+     let numClicks = 0;
+     const handleClick = () =>{
+         alert(numClicks);
+     }
+     return {
+         countClicks : () =>{
+             document.addEventListener("click",handleClick)
+         }
+     }
+ }()
+typeof MouseCountModule.numClicks //=> undefined
+typeof MouseCountModule.handleClick//=>undefined
+typeof MouseCountModule.coutClicks()//=>function
+
+//module extension
+//各个方法的私有变量不可以相互传递
+//1.
+(function (module) {
+    let numScrolls = 0;
+    const handleScrolls = ()=> {
+        alert(++numScrolls);
+    }
+    module.countScrolls = () => {document.addEventListener("wheel",handleClick);
+    }
+})(MouseCounterModule);
+//2.
+MouseCounterModule.newMethod = () => {}
+//3.
+MouseCounterModule.newSubmodule = () => {
+    return {...};
+}()
+```
+### AMD, CommonJS, ES6 modules
+
+- AMD 异步加载，基于模块包，主要适用于浏览器
+- CommonJS 同步加载，基于文件，主要适用于Node这种服务器平台
+- 三者关系：ES6 modules 是AMD，CommonJS 优点的集合，CommonJS 和 ES6 modules都是 基于文件的，即 one module per file;它们的语法类似，利用export 暴露，import 引入；AMD和ES6 module 都是异步加载的
+- ES6 modules 可以利用default export  简单地暴露整个模块
+- 所有的import 和 exports 都可以利用 as 重新命名
 
 
 
+## 12. DOM
+
+- Dom 的attribute 和 property 不是同一个东西，但是dom自带的大多数属性对于二者来说是同步的，即:DOM.setAttribute('id','name')  等于 DOM.id = name；而程序员给dom加的特殊属性只能用DOM.getAttribute获取到
+
+- " dom.style.property"只能获取到内联的style属性，< style >内的或者link 引入的属性都无法被获取或者记录，但是页面上会展现
+
+- 将带“-”的属性转化为驼峰格式
+```js
+ function style(element,name,value) {
+     
+     name = name.replace(/-([a-z])/ig,(all,letter)=>{
+         
+          return letter.toUpperCase();
+     })
+     if(typeof value !== 'undefined') {
+         element.style[name] = value;
+     }
+     return element.style[name];
+ }
+``` 
 
 
-
-
-
-
-
-
+- getComputedStyle
