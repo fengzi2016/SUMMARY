@@ -81,6 +81,18 @@ config.js //放置公共路由参数
         }
     }
 ```
+```js
+//更简单的写法
+const addClass = (dom,name) => {
+    dom.classList.add(name);
+}
+const removeClass = (dom,name) => {
+    dom.classList.remove(name);
+}
+const hasClass = (dom,name) => {
+    return dom.classList.contains(name);
+}
+```
 
 ## 构造出类封装代码。
 ### 作用：直接处理从服务器返回的数据，使得这个类里的数据可以直接应用到Dom对象渲染，减少代码量
@@ -183,3 +195,10 @@ this.$refs.layer.style[transform] = `translate3d(0,${translateY}px,0)`;
         }
  ``
 
+store文件夹
+
+- actions => 
+- state => 组件和模块相关数据,底层数据
+- getters => 数据映射,函数的集合，计算属性，根据state的不同值计算新的值,也可以是比较复杂的判断逻辑
+- mutation-types => 修改动作的集合，通常定义成字符串常量
+- mutations => 修改数据的逻辑

@@ -1,3 +1,76 @@
+//simple Inheriantance 解析
+
+/* Simple JavaScript Inheritance
+ * By John Resig https://johnresig.com/
+ * MIT Licensed.
+ */
+// Inspired by base2 and Prototype
+(function(){
+    var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+   
+    // The base Class implementation (does nothing)
+    this.Class = function(){};
+     // 注意：Class本身就是一个构造器
+    // Create a new Class that inherits from this class
+    Class.extend = function(prop) {
+      var _super = this.prototype;
+       
+      // Instantiate a base class (but only create the instance,
+      // don't run the init constructor)
+      initializing = true;
+      var prototype = new this();
+      initializing = false;
+       //以上主要工作是将父类原型暂时转移至super变量，同时用类自身构造一个对象，作为新的原型prototype
+       //为后续的继承工作做准备
+      // Copy the properties over onto the new prototype
+      for (var name in prop) {
+        // Check if we're overwriting an existing function
+        prototype[name] = typeof prop[name] == "function" && 
+          typeof _super[name] == "function" && fnTest.test(prop[name]) ?
+          (function(name, fn){
+            return function() {
+              var tmp = this._super;
+               
+              // Add a new ._super() method that is the same method
+              // but on the super-class
+              this._super = _super[name];
+               
+              // The method only need to be bound temporarily, so we
+              // remove it when we're done executing
+              var ret = fn.apply(this, arguments);        
+              this._super = tmp;
+               
+              return ret;
+            };//若当前待重写的属性prop[name]是一个函数，且父类中也有这个函数，则返回一个经过闭包加工过的函数给prototype
+          })(name, prop[name]) :
+          prop[name]; //否则将该属性直接赋值给prototype
+      }
+       
+//for 循环用来逐个处理新进来的prop的各个属性，生成最终的新原型prototype
+
+      // The dummy class constructor
+      //声明一个新的名叫Class的构造器，不要将外部的Class与之混淆
+      function Class() {
+        // All construction is actually done in the init method
+        if ( !initializing && this.init )
+          this.init.apply(this, arguments);
+      }
+       
+      // Populate our constructed prototype object
+      Class.prototype = prototype;
+       
+      // Enforce the constructor to be what we expect
+      Class.prototype.constructor = Class;
+    //将新构造器的extend属性指向当前正在被执行的extend函数
+      // And make this class extendable
+      Class.extend = arguments.callee;
+      //最终经过整个extend函数的加工之后，外部将获得了一个含有由prop和_super通过继承和覆盖后得到的新prototype的构造器
+       
+      return Class;
+    };
+    //创建一个临时的Class构造器并将第二部分生成的prototype付给该构造器的prototype属性，也即指定了Class对象的新原型，并在最后将构造器返回
+  })();
+
 /*Publish / Subscribe模式（发布/订阅）
 / topics =  {
    topic1: [
