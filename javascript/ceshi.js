@@ -169,5 +169,10 @@
 // obj.add('i love lijia')
 // const numbers = new Set(['m','p','3']);
 // console.log(numbers.entries())
-let arr = [1,2,3]
-console.log(Array.prototype.slice.call(arr,1))
+// let arr = [1,2,3]
+// console.log(Array.prototype.slice.call(arr,1))
+try {
+    throw new Error("Whoops!");
+} catch (e) {
+    alert(e.name + ": " + e.message);
+}
