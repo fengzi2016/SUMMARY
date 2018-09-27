@@ -12,7 +12,7 @@
 ### 1. date时间戳
 1. 日期转化为时间戳
 ```js
-    let  time = '2014-04-23 18:55:49:123'
+    let time = '2014-04-23 18:55:49:123'
     let date  = new Date(time);
     console.log(Date.parse(time))
     console.log(Date.parse(date))
@@ -136,7 +136,7 @@ console.log(parseQueryString('https://scriptoj.com/problems/#?offset=10&limit=10
 
 2. 反码
 
-    源码除了符号位按位取反再加+
+    源码除了符号位按位取反再加+1
 
     如 2 的源码 0000 0010
 
@@ -162,6 +162,44 @@ console.log(parseQueryString('https://scriptoj.com/problems/#?offset=10&limit=10
 
 bind: fn.bind(obj,arguments)生成一个新的函数，其内容是fn的拷贝，并且它的content上下文是obj,所以它指定的this 是obj
 
+### 6. Event Loop
+
+**nodejs**
+1. timers (setTimeout,setInterval)
+2. I/O callbacks (上一轮循环中有少数的I/Ocallback会被延迟到这一轮的这一阶段执行)
+3. idle,prepare (内部使用))
+4. pool (最重要的阶段，执行I/O callback，在适当条件下会阻塞在这个阶段)
+5. check （setImmidate）
+6. close callbacks （执行close事件的callback，例如socket.on("close",func)）
+
+
+**浏览器**
+
+- 微任务：promise，nextTick，IO回调
+- 宏任务：setImmidate , setTimeout, setInterval
+
+1. 先执行当前栈，执行完主执行线程中的任务
+2. 取出MicroTask微任务队列任务执行直到清空
+3. 取出Macrotask宏任务中一个任务执行
+4. 检查Microtask微任务中有没有任务，如果有任务，执行直到空
+5. 循环3和4.
+
+#### 注意
+
+- 如果有IO操作，则进入pool阶段（可能会阻塞），之后是process.nextTick(),setImmidate, timer...如果IO操作之前有timer，则应该先检测timer阶段是是否有callback时间到了。
+
+例子：
+```js
+//读取或写入文件操作
+var fs = require('fs');
+function someAsyncOperation (callback) {
+  // 花费2毫秒
+  fs.readFile(__dirname + '/' + __filename, callback);
+}
+
+```
+- process.nextTick() ，阶段转化的时候调用，属于microtask。process.nextTick()方法将 callback 添加到next tick 队列，并且nextTick优先级比promise等microtask高，所以一般所有同步代码执行完后，就是nextTick里的代码
+- 同一个上下文下，MicroTask微任务会比MacroTask宏任务先运行。
 
 
 
