@@ -26,13 +26,47 @@
 //     return result;
 //   }
 // console.log(toChineseNum(66046247));
-function Vue() {
-  this._init('ss')
-}
-function initMixin(Vue) {
-  Vue.prototype._init = function (options) {
-    console.log(this)
+// function Vue() {
+//   this._init('ss')
+// }
+// function initMixin(Vue) {
+//   Vue.prototype._init = function (options) {
+//     console.log(this)
+//   }
+// }
+// initMixin(Vue);
+// Vue()
+function sum() {
+  let result = 0;
+  for(let i=0;i<arguments.length;i++) {
+      result+=arguments[i];
   }
+  function foo() {
+      for(let j=0;j<arguments.length;j++) {
+          result+=arguments[j];
+      }
+      return foo;
+  }
+  foo.valueOf=function(){
+      return result;
+  }
+  return foo;
 }
-initMixin(Vue);
-Vue()
+console.log(sum(1,2)(3,4).valueOf())
+
+// class Solution {
+//   public:
+//       int maxArea(vector<int>& height) {
+//           int maxarea = 0, l = 0, r = height.size()-1;
+//           while(l<r) {
+//               maxarea = max(maxarea,min(height[l],height[r])*(r-l));
+//               if(height[l]<height[r]) {
+//                   l++;
+//               }else{
+//                   r--;
+//               }
+//           }
+//           return maxarea;
+          
+//       }
+//   };
