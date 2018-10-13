@@ -21,3 +21,22 @@
         return help;
     }
 ```
+
+```js
+    function sum() {
+        let result = 0;
+        for(let i=0;i<arguments.length;i++) {
+            result+=arguments[i];
+        }
+        function foo() {
+            for(let j=0;j<arguments.length;j++) {
+                result+=arguments[j];
+            }
+            return foo;
+        }
+        foo.valueOf=function(){
+            return result;
+        }
+        return foo;
+    }
+```
