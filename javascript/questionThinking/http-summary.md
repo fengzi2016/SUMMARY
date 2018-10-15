@@ -33,20 +33,78 @@
 - 404 没有找到资源
 - 5XX服务器错误
 
+## HTTP首部
+1. 首部的字段格式：
+> 首部字段名：字段值【多个，用逗号分隔】
 
+2. 首部的分类
 
+- 端到端首部。分在此类别中的首部会转发给请求 / 响应对应的最终接收目标，且必 须保存在由缓存生成的响应中，另外规定它必须被转发。
+- 逐跳首部。分在此类别中的首部只对单次转发有效，会因通过缓存或代理而不再 转发。HTTP/1.1 和之后版本中，如果要使用 hop-by-hop 首部，需提 供 Connection 首部字段。
+
+3. 首部字段
+- 通用首部字段 （请求和响应报文）
+    - 字段列表
+        - Cache-Control 控制缓存行为
+        - Connection 逐跳首部，连接的管理
+        - Date 创建报文的时间
+        - Pragma 报文指令
+        - Trailer 报文末端的首部一览
+        - Transfer-Encoding 指定报文主题的传输编码方式
+        - Upgrade 升级为其它协议
+        - Via 代理服务器的相关信息
+        - Warning 错误通知
+ - 请求首部字段
+    - 字段列表
+    - Accept 用户代理可以处理的媒体类型
+    - Accept-Charset 优先的字符集
+    - Accept-Encoding 优先的内容编码
+    - Accept-Language 优先的语言（如中文）
+    - Authorization Web认证信息
+    - Expect 期待服务器的特定行为
+    - From 用户的电子邮箱地址
+    - Host 请求资源所在服务器
+    - If-Match 比较实体标记（ETag）
+    - If-Modified-Since 比较资源更新时间
+    - If-None-Match 比较实体标记（与If-Match相反）
+    - If-Range 资源未更新时发送实体Byte的范围请求
+    - If-UnModified-Since 比较资源的更新时间，与If-Modified-Since相反
+    - Max-Forwards 最大传输逐跳数
+    - Proxy-Authorization 代理服务器要求客户端的认证信息
+    - Range 实体的字节范围请求
+    - TE 传输编码的优先级
+    - User-Agent HTTP客户端程序的信息
+- 响应首部字段
+    - 字段列表
+        - Accept-Ranges 是否接收字节范围请求
+        - Age 推算资源创建经过时间
+        - ETag 资源的匹配信息
+        - Location 令客户端重定向至指定URI
+        - Proxy-Authenticate 代理服务器对客户端的认证信息
+        - Retry-After 对再次发起请求的时机要求
+        - Server HTTP服务器的安装信息
+        - Vary 代理服务器缓存的管理信息
+        - WWW-authenticate 服务器对客户端的认证信息
+- 实体首部字段
+    - 字段列表
+        - Allow 资源可支持的HTTP方法
+        - Content-Encoding 实体主体适用的编码方式
+        - Content-Language 实体主体使用的自然语言
+        - Content-Length 实体主体的大小
+        - Content-Location 替代对应资源的URI
+        - Content-MD5 实体主体的报文概要
+        - Content-Range 实体主体的位置范围
+        - Content-Type 实体主体的媒体类型
+        - Expires 实体主体过期的日期时间
+        - Last-Modified 资源的最后修改日期时间
 ## 缓存 (要知道在不同的角度去看，服务器的头部和客户端的首部解释不一样)
 缓存不仅可以存在于缓存服务器（代理）内，还可以存在客户端浏览器中（都在磁盘上）
-- 通用首部字段（服务器，客户端）
-- 请求首部字段（客户端） 
-    - Accept
-    - Host
-    - Authorization
-    - If-Match.服务器会比对 If-Match 的字段值和资源的 ETag 值，仅当两者一致 时，才会执行请求。反之，则返回状态码 412 Precondition Failed 的响 应。
 
-    
+- 缓存请求指令
+- 缓存响应指令
 
-- 响应请求首部字段（服务器）
+![cache](http://m.qpic.cn/psb?/V13Sdu2D3uI4IT/1pUPTmTidI4XawZHq*9*6MtIAz23G64FiZaODU8s7tY!/b/dDABAAAAAAAA&bo=lQNgAwAAAAADB9c!&rf=viewer_4)
+
 
 
 
