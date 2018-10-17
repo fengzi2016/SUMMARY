@@ -94,5 +94,63 @@
 ```
 ![pic](http://m.qpic.cn/psb?/V13Sdu2D3uI4IT/uSF5Ftr*S.9xqm0QuX5e2G3xrGOtQrsKPf6BBO64wPQ!/b/dDcBAAAAAAAA&bo=egINAgAAAAADB1U!&rf=viewer_4)
 
+- children 
+
+当给组件传入单个子元素时，如:
+```js
+    <Button>
+        <span>Cilck me</span>
+    </Button>
+```
+会出现以下提示：
+
+>Failed prop type: Invalid prop `children` of type `object` supplied
+to `Button`, expected `array`.
+
+这是因为组件只有单个子元素时，出于性能方面的考虑,React 会优化元素的创建过程，避免分配数组。
+解决方法：
+```js
+ Button.propTypes = {
+     children:React.PropTypes.oneOfType([
+         React.PropTypes.array,
+         React.propTypes.element,
+     ])
+ }
+```
+- 容器组件和表现组件
+    - 容器组件
+        - 例子
+        ```js
+            class XxxContainer extends Component {
+                render(){
+                    return <Xxx {...this.state,...this.props} />
+                }
+            }
+        ```
+        - 特点：
+            - 更关心行为部分；
+            - 负责渲染对应的表现组件；
+            - 发起API请求并操作数据
+            - 定义事件处理器
+            - 写作类的形式
+    - 表现组件
+        - 例子，纯函数：
+        ```js
+           const Xxx = (props,context) =>{
+               return (
+                   <div>{props.name}</div>
+               )
+           }
+           Xxx.propTypes = {
+               name:React.PropTypes.string
+           }
+        ```
+    - 特点：
+        - 更关心视觉表现
+        - 负责渲染HTML标记和其它组件
+        - 以props的形式从父组件接收数据
+        - 通常写作无状态函数式组件
+
 - 工具
     - react-docgen 生成文档工具
+    - react-storybook 按照组件自身的代码来构建一套视觉展示库
