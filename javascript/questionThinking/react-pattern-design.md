@@ -151,6 +151,12 @@ to `Button`, expected `array`.
         - 以props的形式从父组件接收数据
         - 通常写作无状态函数式组件
 
+- 组合一切
+    - Mixin
+    - 高阶组件
+    - 函数子组件
+    - context
+    - recompose
 - 工具
     - react-docgen 生成文档工具
     - react-storybook 按照组件自身的代码来构建一套视觉展示库
