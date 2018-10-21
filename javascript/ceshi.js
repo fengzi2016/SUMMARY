@@ -171,8 +171,27 @@
 // console.log(numbers.entries())
 // let arr = [1,2,3]
 // console.log(Array.prototype.slice.call(arr,1))
-try {
-    throw new Error("Whoops!");
-} catch (e) {
-    alert(e.name + ": " + e.message);
+// try {
+//     throw new Error("Whoops!");
+// } catch (e) {
+//     alert(e.name + ": " + e.message);
+// }
+const spy = function(fn) {
+    let calls = [];
+    console.log(arguments)
+    const helper = function() {
+      const obj = {
+        args:[...arguments],
+        result:fn.apply(this,arguments)
+      };
+      calls.push(obj)
+      return obj.result;
+    }
+    helper.calls = calls;
+    return helper;
+   }
+const tmp = function(a,b) {
+    return a+b
 }
+const s = spy(tmp)
+s(1,2)
