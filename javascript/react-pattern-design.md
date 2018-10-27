@@ -152,12 +152,53 @@ to `Button`, expected `array`.
         - 通常写作无状态函数式组件
 
 - 组合一切
-    - Mixin
+    - Mixin（不推荐）：当组件之间需要共享功能时的做法
+        - 注意：mixin只能与createClass 工厂方式搭配使用，当使用类是不能运用minxin,而react的核心概念是 声明式，createClass其实是命令式。
+        - mixin通常是对象字面量，和组件拥有同样的方法和属性例子:
+
+        ```js
+            const WindowResize = {
+                getInitialState() {
+                    //初始化state,固定的生命周期
+                    return {
+                        innerWidth:window.innerWidth
+                    }
+
+                },
+                ComponentDidMount() {
+                    window.addEventListener('resize',this.hanleResize);
+                },
+                ComponentWillUnMount() {
+                    window.removeEventListener('resize',this.hanleResize);
+                }
+                hanleResize() {
+                    this.setState({
+                        innerWidth:window.innerWidth
+                    })
+                }
+            }
+            // 应用mixin
+            const MyComponent = React.createClass({
+                mixins:[WindowResize],
+                render(){
+                    console.log('window.innerWidth:',this.state.innerWidth)
+                }
+            })
+        ```
+        - mixin的生命周期方法和初始状态可以和使用它的组件合并，重复的生命周期会按顺序执行，重复的state会被覆盖
+        - 缺陷：1. 高耦合，难以维护，当一个mixin发生改变，所有用了它的组件都会做出改变。2. 生命周期和状态发生冲突，或者对于组件来说是引入了不必要的状态。
+    
     - 高阶组件
     - 函数子组件
     - context
     - recompose
+    - render props
+    - children
+    
 - 工具
     - react-docgen 生成文档工具
     - react-storybook 按照组件自身的代码来构建一套视觉展示库
     - radium 解决react行内样式无法定义伪类和媒体查询等问题
+    - react-addons-css-transition-group 可以帮助我们声明式地创建动画
+    - react-css-modules 将css模块化，使得在javascript中引用时更规范
+    - styled-components css工具，支持伪类，支持媒体查询
