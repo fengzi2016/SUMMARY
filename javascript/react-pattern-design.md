@@ -188,13 +188,175 @@ to `Button`, expected `array`.
         - mixin的生命周期方法和初始状态可以和使用它的组件合并，重复的生命周期会按顺序执行，重复的state会被覆盖
         - 缺陷：1. 高耦合，难以维护，当一个mixin发生改变，所有用了它的组件都会做出改变。2. 生命周期和状态发生冲突，或者对于组件来说是引入了不必要的状态。
     
-    - 高阶组件
-    - 函数子组件
-    - context
-    - recompose
+    - 高阶组件(Hoc 装饰者模式)
+        - 一个相关插件：recompose 
+        - 命名方式：withSomeState 
+        - 基本样式:
+            ```js
+                const withSomeState = Component => EnhancedComponent
+            ```
+        - 优点：
+            - 有完整的生命周期，可以使用shouldComponentUpdate进行优化
+            - 用prop传值而不污染组件内部状态
+            - 在真正调用组件前后做一些事，比如埋点数据等
+            - 判断组件是否该render，或则应该render其他的东西，比如出错之后render错误页面
+            - 传递props并增加新的props
+            - 不render组件，转而做一些其他的事情，比如渲染一个外部的dom
+        - 缺点：
+            - 所有的信息传递需要到内部的组件才知道是如何交互的
+            - 传递的props在一开始就被固定，无法修改
+        - 高阶用法：
+            - Props Proxy(PP)
+                - 例子：
+                    ```js
+                       function ppHOC(WrappedComponent) {  
+                            return class PP extends React.Component {    
+                                render() {      
+                                    return <WrappedComponent {...this.props}/>    
+                                    }  
+                            } 
+                        }
+                    ```
+                - 用法：
+                    1. 操作 props
+                    2. 通过 Refs 访问到组件实例
+                    3. 提取 state
+                    4. 用其他元素包裹 WrappedComponent
+
+            - Inheritance Inversion (II)
+                - 概念：反向继承
+                - 例子：
+                ```js
+                // WrappedComponent 被 Enhancer 继承了
+                    function IIHOC(WrappedComponent) {
+                        return class Enhancer extends WrappedComponent {
+                            render() {
+                                return super.render()
+                            }
+                        }
+                    }
+                ```
+                - II允许 HOC 通过 this 访问到 WrappedComponent，意味着它可以访问到 state、props、组件生命周期方法和 render 方法。
+                - 用法：
+                    - 渲染劫持（Render Highjacking）
+                    1. 渲染劫持的用法：
+                    - 在由 render输出的任何 React 元素中读取、添加、编辑、删除 props
+                        * 例子：
+                            ```js
+                            function iiHOC(WrappedComponent) {
+                                return class Enhancer extends WrappedComponent {
+                             render() {
+                                const elementsTree = super.render()
+                                let newProps = {};
+                                if (elementsTree && elementsTree.type === 'input') {
+                                    newProps = {value: 'may the force be with you'}
+                                }
+                                const props = Object.assign({}, elementsTree.props, newProps)
+                                const newElementsTree = React.cloneElement(elementsTree, props, elementsTree.props.children)
+                                return newElementsTree
+                                        }
+                                }
+                            }              
+                            ```
+                    2. 读取和修改由 render 输出的 React 元素树
+                    3. 有条件地渲染元素树
+                        ```js
+                            function iiHOC(WrappedComponent) {
+                            return class Enhancer extends WrappedComponent {
+                                render() {
+                                if (this.props.loggedIn) {
+                                    return super.render()
+                                } else {
+                                    return null
+                                }
+                                }
+                            }
+                            }
+                        ```
+                    4. 把样式包裹进元素树（就像在 Props Proxy 中的那样）
+                    - 操作 state
+
+
+    - 函数子组件(Facc 装饰者模式)
+        - 概念：不按组件的形式传递子组件，而是定义一个可以从父组件接收参数
+        - 例子：
+        ```js
+           const Name = ({ children }) => children('World')
+            Name.propTypes = {
+                children: React.PropTypes.func.isRequired,
+            }
+                // 上述组件的用法如下所示：
+            <Name>
+                {name => <div>Hello, {name}!</div>}
+            </Name>
+        - 优点：
+            - 可以像高阶组件那样封装组件，在运行时为它们传递变量而不是固定属性。
+            例子：
+            ```js
+                const Fetch = ({children}) => children('data');
+                <Fetch url="...">
+                 {data => <List data={data} />}
+                </Fetch> 
+            ```
+            - 使用组件的开发者可以自行决定函数接收的变量的名称
+            - 封装器的可复用程度很高，因为它不关心子组件要接收什么，只期望传入一个函数的函数。
+        - 缺点：不能使用shouldComponentUpdate
+
+
+        ```
+    - context （订阅模式）
+        - 可以直接调用组件内的某个函数，但是会破坏封装信
     - render props
-    - children
+        - 情景：当需要在有大多数相同组件的集合中插入不同的组件时
     
+- 服务器端渲染（SEO和性能优化）
+```js
+    // app.js
+    
+    const App = ({ gists }) => (
+        <ul>
+            {gists.map(gist => (
+                <li key={gist.id}>{gist.description}</li>
+            ))}
+        </ul>
+    )
+    App.propTypes = {
+        gists: React.PropTypes.array,
+    } 
+    export default App
+     // =======================================================
+    // template.js
+    // 因为服务端拿到客户端后会再次渲染一遍App，所以到客户端的的时候要把数据赋给全局变量window，不然gist为undefined
+    export default (body, gists) =>
+     `
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="UTF-8">
+        </head>
+        <body>
+        <div id="app">${body}</div>
+        <script>window.gists = ${JSON.stringify(gists)}</script>
+        <script src="/bundle.js"></script>
+        </body>
+        </html>
+        ` 
+    // =======================================================
+    // server.js
+    // 要想在服务端使用获取 API，需要先安装 isomorphic-fetch 库，该库按照标准实现了获取函数
+    import fetch from 'isomorphic-fetch';
+    import template from './template';
+    app.get('/', (req, res) => {
+        fetch('https://api.github.com/users/gaearon/gists')
+            .then(response => response.json())
+            .then(gists => {
+            const body = ReactDOM.renderToString(<App gists={gists} />)
+            const html = template(body)
+            res.send(html)
+        })
+    }) 
+
+```
 - 工具
     - react-docgen 生成文档工具
     - react-storybook 按照组件自身的代码来构建一套视觉展示库
@@ -202,3 +364,5 @@ to `Button`, expected `array`.
     - react-addons-css-transition-group 可以帮助我们声明式地创建动画
     - react-css-modules 将css模块化，使得在javascript中引用时更规范
     - styled-components css工具，支持伪类，支持媒体查询
+    - 要想在服务端使用获取 API，需要先安装 isomorphic-fetch 库
+    - Next.js 服务器端渲染工具
