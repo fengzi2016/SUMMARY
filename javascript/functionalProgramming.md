@@ -183,3 +183,21 @@
     var	dasherize	=	compose(join('-'),	toLower,	trace("after	split") ,	split('	'),	replace(/\s{2,}/ig,	'	'); //	after	split	[	'The',	'world',	'is',	'a',	'vampire'	]
 
 ```
+
+- 示例应用(用函数式编程的方法爬取某个网站的图片并且展示)
+```js
+    requirejs.config({
+        paths:{
+            ramda:'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.13.0/ ramda.min',
+            jquery:	'https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/ jquery.min'
+        }
+    });
+    require([
+        'ramda',
+        'jquery'
+    ],
+    function(_,$){
+        // Utils
+    })
+    
+```
