@@ -1,8 +1,10 @@
 # 事件机制
 参考链接
-[EventTarget.addEventListener]()
-(https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener)
-[事件机制]https://github.com/InterviewMap/CS-Interview-Knowledge-Map/blob/master/Browser/browser-ch.md#%E4%BA%8B%E4%BB%B6%E8%A7%A6%E5%8F%91%E4%B8%89%E9%98%B6%E6%AE%B5()
+
+[EventTarget.addEventListener](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener)
+
+[事件机制](https://github.com/InterviewMap/CS-Interview-Knowledge-Map/blob/master/Browser/browser-ch.md#%E4%BA%8B%E4%BB%B6%E8%A7%A6%E5%8F%91%E4%B8%89%E9%98%B6%E6%AE%B5)
+
 [事件介绍](https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/Building_blocks/Events)
 - 一系列事件：
 事件在浏览器窗口中被触发并且通常被绑定到窗口内部的特定部分 — 可能是一个元素、一系列元素、被加载到这个窗口的 HTML 代码或者是整个浏览器窗口。
