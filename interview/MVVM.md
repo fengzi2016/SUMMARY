@@ -86,3 +86,66 @@ Controller 非常薄，只起到路由的作用，而 View 非常厚，业务逻
         1. 只能对属性进行数据劫持，所以需要深度遍历整个对象
         2. 对于数组不能监听到数据的变化
     - 总结：整个体系搭建并不复杂，只需要注意其中三个核心的部分：getter/setter，Directive以及binding。细心的读者不难发现，在本文的实现中，如果线程频繁触发数据变更，会导致DOM频繁更新，非常影响性能。在真正的生产环境中，DOM的更新不是数据变更后立马更新，而是被加入到批处理队列，等待主线程运行完后再进行批处理。
+
+    - 源码实现
+
+    ```js
+     class Wathcer {
+         constructor(obj,name,cb) {
+             Dep.target=this;
+             this.name = name;
+             this.obj = obj;
+             this.value = obj[name];
+             this.cb = cb;
+             Dep.target = null;
+         }
+         update() {
+             this.value = this.obj[this.name];
+             this.cb(this.value);
+         }
+     }
+     class Dep() {
+         constructor() {
+             this.subs = [];
+         }
+         addSub(sub) {
+             this.subs.push(sub);
+         }
+         notify(){
+             this.subs.foreach(sub=>{
+                 sub.update();
+             })
+         }
+     }
+     Dep.traget = null
+     function deal(obj, key, val) {
+         observe(val);
+         let dp = new Dep();
+         Object.defineProperty(obj,key,{
+             get:function(){
+                 if(Dep.target){
+                     dp.addSub(Dep.target)
+                 }
+                 return val
+                 
+             }
+             set:function(newVal) {
+                 value = newVal
+                 dp.notify();
+             }
+         })
+     }
+     function observe(obj) {
+         if(!obj || typeof obj!== 'object')
+         return;
+         Object.keys(obj).forEach((key)=>{
+             deal(obj,key,obj[key]);
+         })
+     }
+     const data =  {name:'guan'}
+     function go (value) {
+         console.log(value)
+     }
+     observe(data);
+     new Watcher(data,'name',go);
+    ```
