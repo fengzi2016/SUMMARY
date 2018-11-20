@@ -149,3 +149,4 @@ Controller 非常薄，只起到路由的作用，而 View 非常厚，业务逻
      observe(data);
      new Watcher(data,'name',go);
     ```
+![image](http://m.qpic.cn/psb?/V13Sdu2D3uI4IT/rrqLYMNjUxKUM01HvuGAb0b7KU4hI5NRM7vjwzjtlX8!/b/dFMBAAAAAAAA&bo=QAZABggHCAcRCT4!&rf=viewer_4)
