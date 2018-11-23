@@ -1,197 +1,82 @@
-
-// console.log(([])?true:false); 
-// console.log(([]==false?true:false)); 
-// console.log(({}==false)?true:false) 
-// 'use strict'
-
-// const where = () => {
-//    //获取调用函数名字
-//    //不严格模式下可以 arguments.caller.name;
-//    let reg = /\s+at\s(\S+)\s\(/g;
-//    let str = new Error().stack.toString()
-//    let res = reg.exec(str) && reg.exec(str)
-//    return res[0]&&res[1];
-// }
-// var myRe = /d(b+)d/g;
-// var str = "cdbbdbsbz,cdbbdbsbz";
-// var myArray = myRe.exec(str);
-// var b = myRe.test(str);
-// var m = str.match(myRe);
-// var s = str.search(myRe);
-// var r = str.replace(myRe,'$1')
-// var sp = str.split(myRe);
-// console.log('a:'+myArray[0])
-// console.log('b:'+b);
-// console.log('m:'+m);
-// console.log('s:'+s);
-// console.log('r:'+r);
-// console.log('sp:'+sp)
-// //分解路由
-// const parseQueryString = function (query) {
-    
-//    // let myRe = /\?\w*(=\w*)*((&\w+){1}(=\w(?!#)*)*)*/g;
-//     let myRe = /\?\S*(=\w*)*((&\w+){1}(=\w(?!#)*)*)*/g;
-//     let result = {};
-//     let r = myRe.exec(query);
-//     if(r!==null){
-//         let myArr =r[0] ;
-//         let qu = myArr.split('?')[1];
-//         qu = qu.split('&');
-//         qu.map((item)=>{
-//            let arr = item.split('=');
-//            if(arr.length==2)
-//             result[arr[0]] = arr[1] || '';
-//            else result[arr[0]] = null;
-//         })
-//     }
-//     return result;
-    
-//   }
-//   console.log(parseQueryString('  https://scriptoj.com/problems/?offset=&limit=100#name=jerry '));
-//   //console.log(parseQueryString('https://scriptoj.com/problems/#?offset=10&limit=100'))
-
-// let  time = '2014-04-23'
-// let date  = new Date(time);
-// console.log(Date.parse(time))
-// console.log(Date.parse(date))
-// console.log(date.valueOf())
-// console.log(date.getTime())
-// String.prototype.add = function(){
-//     console.log(this)
-//     console.log(this+'2')
-   
-// }
-
-// class EventEmitter {
-//     constructor() {
-//         this._events = {}
-//     }
-//     on(event,callback) {
-//         // 获取之前存储的其它回调函数，没有则为空数组
-//         let callbacks = this._events[event] || [];
-//         // 将新回调函数加入函数数组
-//         callbacks.push(callback);
-//         // 将数组作为类的私有变量_events的属性名为event的属性值
-//         this._events[event] = callbacks;
-//         // 将类实例？还是类返回
-//         return this;
-//     }
-//     off(event,callback) {
-//         let callbacks = this._events[event] || [];
-//         this._events[event] = callback.filter((fn)=> fn!=callback);
-//         return this;
-//     }
-//     emit(...args) {
-//         const event = args[0];
-//         //取 args 这个数组中的从下标1到最后的元素赋给数组[]
-//         const params = [].slice.call(args,1);
-//         const callbacks = this._events[event];
-//         callbacks.forEach(fn => fn.apply(this,params))
-//         return this;
-//     }
-//     once(event,callback) {
-//         let wrapFunc = (...args) => {
-//             callback.apply(this,args);
-//             this.off(event,wrapFunc);
-//         }
-//         this.on(event,wrapFunc);
-//         return this;
-//     }
-    
-// }
-
-// let event = new EventEmitter();
-// event.on('go',function(){
-//     console.log(this)
-// })
-// event.emit('go')
-
-//console.log(new Date(1111111))
-
-
-// var isAnagram = function(s, t) {
-//     let obj = {};
-//     let o= {};
-//     if(s.length != t.length) return false;
-//     let st = s.split('');
-//     let tt = t.split('');
-//     st.forEach((val)=>{
-//         if(obj[val]){
-//             ++obj[val] ;
-//         }else {
-//             obj[val] = 1;
-//         }
-//     });
-//     tt.forEach((val)=>{
-//         if(o[val]){
-//             ++o[val];
-//         }else {
-//             o[val] = 1;
-//         }
-//     });
-   
-//     for(let i in obj) {
-//         if(!o[i] ||  o[i] != obj[i]){
-//             return false;
-//         }
-//     }
-//     return true;
-// };
-
-// let b = isAnagram("anagram","nagaram");
-// console.log(b)
-
-// function grid() {
-//     +function() {
-//        var i = 1;
-//     }();
-    
-//    console.log(i)
-// }
-// grid();
-//   function* weaponGenerator() {
-//         yield "Katana";
-//         yield "Wakizashi";
-//         return 'return';
-//     }
-//     //第一种输出写法
-//     for(let weapon of weaponGenerator()){
-//         console.log(weapon)
-//         // assert(weapon !== undefined , weapon);
-//     }
-// let obj = {
-//     length:0,
-//     add: function(value) {
-//         Array.prototype.push.call(this,value);
-//     }
-// }
-// obj.add('lijia');
-// obj.add('i love lijia')
-// const numbers = new Set(['m','p','3']);
-// console.log(numbers.entries())
-// let arr = [1,2,3]
-// console.log(Array.prototype.slice.call(arr,1))
-// try {
-//     throw new Error("Whoops!");
-// } catch (e) {
-//     alert(e.name + ": " + e.message);
-// }
-const spy = function(fn) {
-    let calls = [];
-    console.log(arguments)
-    const helper = function() {
-      const obj = {
-        args:[...arguments],
-        result:fn.apply(this,arguments)
-      };
-      calls.push(obj)
-      return obj.result;
-    }
-    helper.calls = calls;
-    return helper;
-   }
-const tmp = function(a,b) {
-    return a+b
+class Dep {
+  constructor() {
+    this.subs = []
+  }
+  addSub(sub) {
+    // sub 是 Watcher 实例
+    this.subs.push(sub)
+  }
+  notify() {
+    this.subs.forEach(sub => {
+      sub.update()
+    })
+  }
 }
-const s = spy(tmp)
-s(1,2)
+// 全局属性，通过该属性配置 Watcher
+Dep.target = null
+
+function observe(obj) {
+  // 判断类型
+  if (!obj || typeof obj !== 'object') {
+    return
+  }
+  Object.keys(obj).forEach(key => {
+    defineReactive(obj, key, obj[key])
+  })
+}
+
+function update(value) {
+  // document.querySelector('div').innerText = value
+  console.log(value)
+}
+
+class Watcher {
+  constructor(obj, key, cb) {
+    // 将 Dep.target 指向自己
+    // 然后触发属性的 getter 添加监听
+    // 最后将 Dep.target 置空
+    Dep.target = this
+    this.cb = cb
+    this.obj = obj
+    this.key = key
+    this.value = obj[key]
+    Dep.target = null
+  }
+  update() {
+    // 获得新值
+    this.value = this.obj[this.key]
+    // 调用 update 方法更新 Dom
+    this.cb(this.value)
+  }
+}
+var data = { name: 'yck' }
+observe(data)
+// 模拟解析到 `{{name}}` 触发的操作
+new Watcher(data, 'name', update)
+// update Dom innerText
+data.name = 'yyy' 
+
+function defineReactive(obj, key, val) {
+  // 递归子属性
+  observe(val)
+  let dp = new Dep()
+  Object.defineProperty(obj, key, {
+    enumerable: true,
+    configurable: true,
+    get: function reactiveGetter() {
+      console.log('get value')
+      // 将 Watcher 添加到订阅
+      if (Dep.target) {
+        console.log(Dep.target)
+        dp.addSub(Dep.target)
+      }
+      return val
+    },
+    set: function reactiveSetter(newVal) {
+      console.log('change value')
+      val = newVal
+      // 执行 watcher 的 update 方法
+      dp.notify()
+    }
+  })
+}

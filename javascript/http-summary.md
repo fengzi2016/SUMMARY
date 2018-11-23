@@ -31,7 +31,7 @@
 - 401 请求需要有通过HTTP认证的认证信息
 - 403 表明请求资源的访问被服务器拒绝
 - 404 没有找到资源
-- 5XX服务器错误
+- 5XX 服务器错误
 
 ## HTTP首部
 1. 首部的字段格式：
@@ -39,7 +39,7 @@
 
 2. 首部的分类
 
-- 端到端首部。分在此类别中的首部会转发给请求 / 响应对应的最终接收目标，且必 须保存在由缓存生成的响应中，另外规定它必须被转发。
+- 端到端首部。分在此类别中的首部会转发给请求 / 响应对应的最终接收目标，且必须保存在由缓存生成的响应中，另外规定它必须被转发。
 - 逐跳首部。分在此类别中的首部只对单次转发有效，会因通过缓存或代理而不再 转发。HTTP/1.1 和之后版本中，如果要使用 hop-by-hop 首部，需提 供 Connection 首部字段。
 
 3. 首部字段
@@ -105,7 +105,23 @@
 
 ![cache](http://m.qpic.cn/psb?/V13Sdu2D3uI4IT/1pUPTmTidI4XawZHq*9*6MtIAz23G64FiZaODU8s7tY!/b/dDABAAAAAAAA&bo=lQNgAwAAAAADB9c!&rf=viewer_4)
 
+### 浏览器缓存的基本知识
 
+
+### 强缓存
+
+实现强缓存可以通过两种响应头实现：Expires 和 Cache-Control 。强缓存表示在缓存期间不需要请求，state code 为 200
+
+```js
+    Expires: Wed, 22 Oct 2018 08:41:00 GMT
+```
+
+Expires 是 HTTP / 1.0 的产物，表示资源会在 Wed, 22 Oct 2018 08:41:00 GMT 后过期，需要再次请求。并且 Expires 受限于本地时间，如果修改了本地时间，可能会造成缓存失效。
+
+```js
+    Cache-control: max-age=30
+```
+Cache-Control 出现于 HTTP / 1.1，优先级高于 Expires 。该属性表示资源会在 30 秒后过期，需要再次请求。
 
 
 ### Cache-Control
