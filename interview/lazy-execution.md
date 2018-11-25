@@ -26,6 +26,7 @@
     var lazyLoadList = [
     function(){
         module(20);
+        console.log(1)
     },function(){
         module(15);
     },function(){
@@ -52,6 +53,7 @@
         module(2);
     },function(){
         module(9);
+        console.log(10)
     }
 ];
 var load = function() {
