@@ -1,10 +1,4 @@
 # 事件循环
 
-## 浏览器事件循环
-- 栈
-- 堆
-- 消息队列
-
-
-
-## nodejs事件循环
+[参考链接](https://juejin.im/post/5b35cdfa51882574c020d685)
+[mdn](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop)
