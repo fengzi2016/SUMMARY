@@ -1,6 +1,5 @@
 // JavaScript实现大数相加
 //思路：利用字符串数字，从低位向高位加
-
 function BigNumber(a,b){
     a = a.toString();
     b = b.toString();
@@ -13,12 +12,15 @@ function BigNumber(a,b){
     for(let i = 0;i<len;i++){
         sum = overNum;
         if(i<arrA.length){
-            sum =  sum + arrA[i];
+            sum =  Number(sum) + Number(arrA[i]);
+            
         }
         if(i<arrB.length){
-            sum = sum+ arrB[i];
+            sum = Number(sum)+ Number(arrB[i]);
         }
+        
         inNum = sum % 10;
+       
         resultArr.push(inNum);
         overNum = Math.floor(sum / 10) ;
         
