@@ -8,6 +8,10 @@
 4. bind,this
 5. 原码补码反码
 6. 保证ajax数据在用户触发数据显示之前显示
+7. arrayBuffer
+8. Bem
+9. 手写Promise
+10. 跨域
 
 ### 1. date时间戳
 1. 日期转化为时间戳
