@@ -16,3 +16,9 @@
   - 节点标签名， 子节点， 节点对象，文本，对应的真实dom节点，名字空间，编译作用域，函数化组件作用域，key，组件的option选项，节点对应的组件的实例，当前节点的父节点，原生html，静态节点标志，是否作为根节点插入，是否为注释节点，是否为克隆节点，是否有v-once指令
 - createElement用来创建一个虚拟节点。当data上已经绑定__ob__的时候，代表该对象已经被Oberver过了，所以创建一个空节点。tag不存在的时候同样创建一个空节点。当tag不是一个String类型的时候代表tag是一个组件的构造类，直接用new VNode创建。当tag是String类型的时候，如果是保留标签，则用new VNode创建一个VNode实例，如果在vm的option的components找得到该tag，代表这是一个组件，否则统一用new VNode创建。
 
+4. 更新过程
+
+- 将vue实例作为参数传入到各种初始化方法中，使得vue拥有各种静态和propotype方法
+- performance.mark(),performance.now()。 Web Performance API允许网页访问某些函数来测量网页和Web应用程序的性能，包括 Navigation Timing API和高分辨率时间数据
+
+
