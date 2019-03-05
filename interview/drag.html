@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style type="text/css">
+    .square{
+      width: 200px;
+      height: 200px;
+      background-color: aqua;
+    }
+    .father{
+      position: relative;
+      height: 1000px;
+    
+    }
+  </style>
+</head>
+
+<body>
+  <div class="father">
+    <div class="square" id="square" draggable="true" >正方形</div>
+  </div>
+</body>
+<script>
+  var body = document.body;
+  var dm = document.getElementById('square');
+  body.addEventListener('dragover',function(e){
+   e.dataTransfer.dropEffect = "move"
+   e.preventDefault();
+  })
+  body.addEventListener('drop',function(e){
+    var offset = e.dataTransfer.getData("text/plain").split(',');
+    dm.style.position = 'absolute'; 
+    // 加上相对位置
+    dm.style.left = (e.clientX + parseInt(offset[0],10)) + 'px';
+    dm.style.top = (e.clientY + parseInt(offset[1],10)) + 'px';
+    e.preventDefault();
+  });
+  square.addEventListener('dragstart',function(e){
+    // 存鼠标在div内的相对位置
+    e.dataTransfer.setData('text/plain',`${e.target.offsetLeft - e.clientX},${e.target.offsetTop - e.clientY}`);
+    console.log( e.dataTransfer.getData('text'));
+  },true);
+</script>
+</html>
