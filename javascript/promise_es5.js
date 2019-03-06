@@ -4,7 +4,12 @@ function Promise(callback) {
     self.data = undefined;
     self.onResolvedCallback = [];
     self.onRejectedCallback = [];
-    callback(resolve,reject);
+    try{
+      callback(resolve,reject);
+    }catch(e){
+      reject(e);
+    }
+    
     function resolve(value) {
         if(self.status==='pending') {
             self.status = 'fulfilled';

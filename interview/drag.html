@@ -10,39 +10,99 @@
       width: 200px;
       height: 200px;
       background-color: aqua;
+      position: absolute;
     }
     .father{
       position: relative;
       height: 1000px;
-    
     }
   </style>
 </head>
 
 <body>
-  <div class="father">
-    <div class="square" id="square" draggable="true" >正方形</div>
+  <div class="father" id='wrapper'>
+    <div class="square" id="square" >正方形</div>
   </div>
 </body>
 <script>
-  var body = document.body;
-  var dm = document.getElementById('square');
-  body.addEventListener('dragover',function(e){
-   e.dataTransfer.dropEffect = "move"
-   e.preventDefault();
-  })
-  body.addEventListener('drop',function(e){
-    var offset = e.dataTransfer.getData("text/plain").split(',');
-    dm.style.position = 'absolute'; 
-    // 加上相对位置
-    dm.style.left = (e.clientX + parseInt(offset[0],10)) + 'px';
-    dm.style.top = (e.clientY + parseInt(offset[1],10)) + 'px';
-    e.preventDefault();
-  });
-  square.addEventListener('dragstart',function(e){
-    // 存鼠标在div内的相对位置
-    e.dataTransfer.setData('text/plain',`${e.target.offsetLeft - e.clientX},${e.target.offsetTop - e.clientY}`);
-    console.log( e.dataTransfer.getData('text'));
-  },true);
+var isDraging = false;
+var offset = {
+  x: 0,
+  y: 0,
+}
+var box = document.getElementById('square');
+var wrapper = document.getElementById('wrapper');
+box.addEventListener('mousedown',function(e){
+  var ev = e || window.event;
+  // 求鼠标在框内的相对距离
+  offset.x = ev.clientX - this.offsetLeft;
+  offset.y = ev.clientY - this.offsetTop;
+  isDraging = true;
+})
+wrapper.addEventListener('mouseover',function(e){
+  var ev = e || window.event;
+  var maxX = wrapper.clientWidth - box.offsetWidth;
+  var maxY = wrapper.clientHeight  - box.offsetHeight;
+  var moveX = Math.min(Math.max(0,(ev.clientX - offset.x)),maxX);
+  var moveY = Math.min(Math.max(0,(ev.clientY - offset.y)),maxY);
+  if(isDraging){
+    box.style.left = moveX + 'px';
+    box.style.top = moveY + 'px';
+  }
+})
+
+wrapper.addEventListener('mouseup',function(e){
+ this.style.backgroundColor = 'green';
+  isDraging = false;
+})
+  // var isDraging = false;
+  // var offset = {
+  //   x: 0,
+  //   y: 0,
+  // };
+  // var dm = document.getElementById('square')
+  // var f = document.getElementById('wrapper')
+  // dm.addEventListener('mousedown',function(e){
+  //   offset.x = e.clientX - this.offsetLeft;
+  //   offset.y = e.clientY - this.offsetTop;
+  //   isDraging = true;
+  // });
+  // document.addEventListener('mouseup',function(e){
+  //   f.style.backgroundColor = 'green';
+  //   isDraging = false;
+  // });
+  // document.addEventListener('mouseover',function(e){
+  //   var e = e || window.event;
+  //   var maxX = f.clientWidth - dm.offsetWidth;
+  //   var maxY = f.clientHeight - dm.offsetHeight;
+  //   var moveX = Math.min(Math.max(0, (e.clientX - offset.x)), maxX);
+  //   var moveY = Math.min(Math.max(0, (e.clientY - offset.y)), maxY);
+
+  //   if (isDraging) {
+  //     dm.style.left = moveX + 'px';
+  //     dm.style.top = moveY + 'px';
+  //   }
+
+  // })
+ 
+  // var body = document.body;
+  // var dm = document.getElementById('square');
+  // body.addEventListener('dragover',function(e){
+  //  e.dataTransfer.dropEffect = "move"
+  //  e.preventDefault();
+  // })
+  // body.addEventListener('drop',function(e){
+  //   var offset = e.dataTransfer.getData("text/plain").split(',');
+  //   dm.style.position = 'absolute'; 
+  //   // 加上相对位置
+  //   dm.style.left = (e.clientX + parseInt(offset[0],10)) + 'px';
+  //   dm.style.top = (e.clientY + parseInt(offset[1],10)) + 'px';
+  //   e.preventDefault();
+  // });
+  // square.addEventListener('dragstart',function(e){
+  //   // 存鼠标在div内的相对位置
+  //   e.dataTransfer.setData('text/plain',`${e.target.offsetLeft - e.clientX},${e.target.offsetTop - e.clientY}`);
+  //   console.log( e.dataTransfer.getData('text'));
+  // },true);
 </script>
 </html>
