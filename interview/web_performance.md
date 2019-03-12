@@ -118,6 +118,11 @@
     - Service Work
     - webpack 文件名哈希值
 
+
+## 前端监控
+### 前端数据监控原理
+- [前端数据监控](https://juejin.im/post/5a5ba6616fb9a01ca7136a8f)
+
 ## 工具
 
 - Chrome DevTools Network Request Blocking，可以模拟阻塞请求
