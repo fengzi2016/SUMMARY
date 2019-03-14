@@ -86,6 +86,12 @@
 
 
 #### 1.2.2 使用缓存
+- http 缓存
+- manifest缓存
+- service worker 缓存
+-  [利用webpack插件进行缓存代码](https://developers.google.com/web/fundamentals/performance/optimizing-javascript/code-splitting/)
+
+
 #### 1.2.3 使用GZIP在传输过程中压缩
 #### 1.2.3 JAVASCRIPT 启动优化
 - 仅发送用户所需代码
@@ -117,6 +123,12 @@
     - http缓存，max-age，Etag
     - Service Work
     - webpack 文件名哈希值
+
+### code spliting
+
+-  webpack code spliting
+-  react-router-dom code spliting
+-  路由按需加载，异步加载
 
 
 ## 前端监控
