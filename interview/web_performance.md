@@ -124,18 +124,52 @@
     - Service Work
     - webpack 文件名哈希值
 
-### code spliting
+### 1.3 code spliting
 
 -  webpack code spliting
 -  react-router-dom code spliting
 -  路由按需加载，异步加载
 
 
-## 前端监控
+## 1.4 前端监控
 ### 前端数据监控原理
+- [Breaking Down the Performance API](https://css-tricks.com/breaking-performance-api/)
 - [前端数据监控](https://juejin.im/post/5a5ba6616fb9a01ca7136a8f)
+- [7天打造前端性能监控系统](http://fex.baidu.com/blog/2014/05/build-performance-monitor-in-7-days/)
+- [示例](https://www.w3.org/TR/performance-timeline-2/#dom-performanceobserver)
+### 关键词
 
-## 工具
+**代理关系**
+
+![关系](https://res.cloudinary.com/css-tricks/image/upload/c_scale,w_1000,f_auto,q_auto/v1512832463/performance_api_illustration_hsvu9g.jpg)
+
+**分类**
+- frame（浏览器构建，比如dom事件，窗口事件，下拉）
+- mark（自定义时间阶段）
+- measure
+- navigation（Provides context for the load operation, such as the types of events that occur.）
+- paint
+- resoure（资源下载）
+
+**宏观**
+- High Resolution API
+
+  - performance API
+
+    - performance timeline API
+
+**方法**
+- getEntries()
+- getEntriesByName()
+- getEntriesByType()
+
+
+
+
+## 二. 重要API
+- getBoundingClientRect()
+- [IntersectionObserver](https://w3c.github.io/IntersectionObserver/)
+## 三. 工具
 
 - Chrome DevTools Network Request Blocking，可以模拟阻塞请求
 - WebPageTest 模拟阻塞以及控制传输速度
