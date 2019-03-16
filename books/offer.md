@@ -89,3 +89,111 @@ public:
 - 空格出现在最前，最后，中间
 - 没有空格
 - 输入为空，只有空格
+
+## 3. 重建二叉树
+
+### 题目
+
+输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
+
+### 思路
+
+- 前序遍历的第一个节点总是树的根节点，中序序列中根节点左边的值属于左子树，右边的值属于右子树
+- 利用6个指针，4个指针指向前序和中序数组的开头和结尾，通过比较前序数组第一个元素与中序数组的值，得到左子树的长度，拿1个指针指向前序数组的左子树的结尾，1个指针指向rootInoder
+- 再递归
+### 代码
+```c++
+  public:
+  struct BinaryTreeNode
+  {
+    int m_nValue;
+    BinaryTreeNode* m_pLeft;
+    BinaryTreeNode* m_pRight;
+  };
+ 
+     BinaryTreeNode* ConstructCore
+  (
+    int* startPreorder, int* endPreorder,
+    int* startInorder, int* endInorder
+  )
+  {
+    int rootValue = startPreorder[0];
+    BinaryTreeNode* root = new BinaryTreeNode();
+    root -> m_nValue = rootValue;
+    root -> m_pLeft = root -> m_pRight = NULL;
+    if(startPreorder == endPreorder)
+    {
+      if(startInorder == endInorder && *startPreorder == *startInorder)
+      {
+        return root;
+      }
+    }
+    int* rootInorder = startInorder;
+    while(rootInorder <= endInorder && *rootInorder !== rootValue){
+        ++ rootInorder;
+    }
+       if(rootInorder == endInorder && *rootInorder !== rootValue)
+      int leftLength = rootInorder - startInorder;
+      int* leftPreorderEnd = startPreorder + leftLength;
+      if(leftLength > 0){
+          root->m_pLeft = ConstructCore(startPreorder+1,leftPreorderEnd,startInorder,rootInorder-1);
+      }
+      if(leftLength<endPreorder-startPreorder){
+             root->m_pRight = ConstructCore(leftPreorderEnd + 1, endPreorder, rootInorder+1, endInorder);
+      }
+      return root;
+  }
+    TreeNode* reConstructBinaryTree(int* pre, int* vin) {
+        int length = pre.size();
+        if(pre == NULL || vin == NULL || length <= 0){
+          return NULL;
+        }
+    return ConstructCore(pre, pre+length-1, vin, vin+length - 1);
+    }
+```
+
+### 考虑情况
+- 普通二叉树（完全二叉树，不完全二叉树）
+- 特殊二叉树（没有节点，有左节点，有右节点，只有一个节点）
+- 特殊输入（前中不匹配，根节点为NULL）
+
+## 4. 用两个栈实现一个队列
+
+### 题目
+
+用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。
+
+### 思路
+
+- 如果stack2中不为空，在stack2中的栈顶元素是最先进入队列，可以弹出。
+- 如果stack2为空，则把stack1中的元素逐个弹出并压入stack2。
+
+
+### 代码
+```c++
+  class Solution
+{
+public:
+    void push(int node) {
+        stack1.push(node);
+    }
+
+    int pop() {
+        if(stack2.size() <= 0){
+            while(stack1.size() > 0){
+                int tmp = stack1.top();
+                stack1.pop();
+                stack2.push(tmp);
+            }
+        }
+        int head = stack2.top();
+        stack2.pop();
+        return head;
+        
+    }
+
+private:
+    stack<int> stack1;
+    stack<int> stack2;
+};
+```
