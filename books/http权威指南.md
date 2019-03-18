@@ -62,7 +62,7 @@ web结构组件
   - 参数
   - 查询
   - 片段
-- 相对URL，[转为绝对URL](https://wx1.sinaimg.cn/mw690/006P0MECgy1g15w6681zyj30pm0n977d.jpg)
+- 相对URL，![转为绝对URL](https://wx1.sinaimg.cn/mw690/006P0MECgy1g15w6681zyj30pm0n977d.jpg)
 - 自动拓展ULR，主机名拓展，历史拓展
 - URL编码机制
 - 方案列表
@@ -113,3 +113,35 @@ web结构组件
   - 3XX （有多个版本，已被移除，临时移除，未修改用缓存，必须用代理）
   - 4XX （请求错误，未认证，被拒绝，找不到，方法不被允许，实体无法接受，需要认证代理，请求超时）
   - 5XX （出错无法服务，超出范围，网关无法连接，超时，协议版本无法支持）
+
+
+## 第四章
+### 关键词
+- TCP流是分段的，由IP分组负责发送，IP分组（IP分组首部，TCP段首部，TCP数据块）
+- HTTPS 分层： HTTP（应用层） =》 SSL或TCL（安全层） =》 TCP（传输层） =》 IP（网络层） =》 网络接口（数据链路层）
+- TCP连接标识（源IP， 源端口，目的IP地址，目的端口）
+- TCP套接字（函数集合）
+  - s = socket(< params >) 创建新的套接字
+  - bind(s, < local IP:port >) 向套接字赋一个本地接口和端口
+  - connect(s, < remote IP:port >)创建一个连接本地套接字和远程主机及端口的连接
+  - listen(s,...) 标识一个本地套接字，使其可以合法接受连接
+  - s2 = accept(s) 等待某人建立一条到本地端口的连接
+  - n = read(s, buffer, n) 尝试从套接字向缓冲区读取n个字节
+  - n = write(s, buffer, n) 尝试从缓冲区向套接字写入n个字节
+  - close 完全关闭tcp连接
+  - shutdown(s,< side >)只关闭TCP连接的输入或输出端
+  - getsockopt(s,...) 读取某个内部套接字配置选项的值
+  - setsockopt(s,...) 修改某个内部套接字配置选项的值
+- TCP套接字编程例子
+
+![例子](http://m.qpic.cn/psb?/V13Sdu2D3uI4IT/VD*NquTsMLE46EOsCjAdpjyZPIhjzrMbS0*yl9ztoSE!/b/dDYBAAAAAAAA&bo=oAU4BAAAAAARB6k!&rf=viewer_4)
+
+- TCP性能
+  - TCP时延：建立连接，TCP慢启动，数据聚集Nale算法
+  - 串行事务(时延高)，优化：
+
+    - 并行连接(多条TCP连接并行发送)，
+    - 持久连接（重用连接，http1.0: keep-alive, 而http1.1里一定是持久连接，如果不需要则发送头部Connection:close），
+    - 管道化连接(共享TCP连接)
+    - 复用连接
+  - 连接双方可以随时关闭连接，所以双方都要对到达关闭了的连接的数据进行处理
