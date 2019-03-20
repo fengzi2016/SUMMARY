@@ -4,8 +4,6 @@
 
 ### 关键词
 
-#### 1.1
-
 - 媒体类型 MIME
 - URI ，URL， URN
 - 事务
@@ -115,7 +113,7 @@ web结构组件
   - 5XX （出错无法服务，超出范围，网关无法连接，超时，协议版本无法支持）
 
 
-## 第四章
+## 第四章 TCP流
 ### 关键词
 - TCP流是分段的，由IP分组负责发送，IP分组（IP分组首部，TCP段首部，TCP数据块）
 - HTTPS 分层： HTTP（应用层） =》 SSL或TCL（安全层） =》 TCP（传输层） =》 IP（网络层） =》 网络接口（数据链路层）
@@ -145,3 +143,77 @@ web结构组件
     - 管道化连接(共享TCP连接)
     - 复用连接
   - 连接双方可以随时关闭连接，所以双方都要对到达关闭了的连接的数据进行处理
+
+## 第五章 Web服务器
+### 关键词
+- 用于HTTP调试的最小型Perl Web 服务器
+```perl
+  #!/usr/bin/perl
+  use Socket;
+  use Carp;
+  use FileHandle;
+  # 将8080作为默认端口
+  $port = (@ARGV ? @ARGV[0] : 8080)
+  # 创建本地TCP socket ，绑定端口并且让它可以接受连接
+  $proto = getprotobyname('tcp');
+  socket(S, PF_INET, SOCK_STREAM, $proto) || die;
+  setsockopt(S, SOL_SOCKET,SO_REUSEADDR, pack("1",1))|| die;
+  bind(S, sockaddr_in($port, INADDR_AND)) || die;
+  listen(S, SOMAXCONN) || die;
+  # 打印启动信息
+  printf("<<Type-O-Serve Accepting on Port %d>>\n\n",$port);
+
+  while(1){
+    # 等待连接C
+    $cport_caddr = accept(C,S);
+    ($cport,$caddr) = sockaddr_in($cport_caddr);
+    C->autoflush(1);
+
+    # 打印连接来源
+    $canme = gethostbyaddr($caddr,AF_INET);
+    printf("<<Request From '%s'>>\n", $cname);
+
+    # 读取请求数据直到换行
+    while($line = <C>){
+      print $line;
+      if($line = ~/^\r/){last;}
+    }
+    # 等待服务器输入返回信息，发送回复行直到读取到".
+    while($line = <STDIN>){
+      $line = ~ s/\r//;
+      $line = ~ s/\n//;
+      if($line = !/^\./){last;}
+      print C $line . "\r\n";
+    }
+    close(C);
+  }
+
+```
+
+- 实际的Web服务器
+  1. 建立连接
+  2. 接收连接
+  3. 处理请求
+  4. 访问资源
+  5. 构建响应
+  6. 发送响应
+  7. 记录事务处理过程（日志）
+- 连接的输入/输出处理结构
+  - 单线程Web服务器
+  - 多进程及多线程Web服务器
+  - 复用I/O的服务器
+  - 复用的多线程Web服务器
+- docroot（根目录），查找资源就是从请求报文中获取URI，并将其附加在文档根目录后面
+- 虚拟托管docroot会根据URL或HOST首部的IP地址或主机名来识别正确的文件根目录。通过这种方式即使请求URL完全相同，托管在同一Web服务器上的两个Web站点也可以拥有完全不同的内容
+- 请求资源可以是静态，也可以是动态的执行程序
+- MIME类型：
+  - 魔法分类（用模式表参照）
+  - 显式分类（强制特定）
+  - 类型协商（最好）
+- 重定向
+  - 永久删除资源
+  - 临时删除资源
+  - URL增强
+  - 负载均衡
+  - 服务器关联
+  - 规范目录名称
