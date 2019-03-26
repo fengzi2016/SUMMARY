@@ -346,3 +346,33 @@ web结构组件
     ```
    - 最初开发的web隧道是为了通过防火墙来传输加密的SSL流量，通常用隧道将非HTTP流量传过端口过滤防火墙
 
+## 第十一章 客户端识别与cookie机制
+- 用户识别机制
+  - 承载用户身份信息的HTTP头部
+  - 客户端IP地址跟踪，通过用户的IP地址进行识别
+  - 用户登陆，用认证的方法
+  - 胖URL，一种在URL中嵌入识别信息的技术
+  - cookie，一种功能强大且高效的持久身份技术
+- 与用户身份有关的首部
+
+| 首部名称 | 首部类型 | 描述 |
+|---|---|---|
+|From|请求|用户的Email地址
+|User-Agent|请求|用户的浏览器软件
+|Referer|请求|用户是从这个页面依照链接跳转过来的
+|Authorization|请求|用户名和密码
+|Client-IP|扩展（请求）|客户端IP地址|
+|X-Forwarded-For|扩展（请求）|客户端的IP|
+|Cookie|扩展（请求）|服务器产生的ID标签|
+
+- 用Authorization登陆过程
+  - 客户端发起请求
+  - 服务器返回401 Login Required，添加WWW-Authorization要求用户登陆，比如:
+  ```
+    HTTP/1.0 401  Login Required
+    WWW-authorization: Basic relam="Plumbing and Fixtures"
+  ```
+  - 用户输入用户名和密码，客户端重新发送请求，并且在请求的首部添加加密了的用户名和密码（Authorization）
+  - 服务器端验证，这样只要登陆一次就可以一直保持会话
+- 胖URL
+  - Web站点为每个用户生成特定版本的URL来标识用户
