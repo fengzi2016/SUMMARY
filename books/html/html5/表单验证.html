@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>表单验证</title>
+</head>
+<script>
+    function check(){
+      var email = document.getElementById("email");
+      if(email.value !== ''){
+        console.log(email.checkValidity())
+        if(!email.checkValidity()){
+          email.setCustomValidity("邮箱格式出错");
+        }else{
+          alert("输入成功")
+        }
+      }
+    }
+</script>
+<body>
+  <form onsubmit="check()">
+    <label for="email">email:</label>
+    <input id="email" name="email" type="email" />
+  </form>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>fileAReader方法示例</title>
+</head>
+<script>
+    var result = document.getElementById('result');
+    var file = document.getElementById('file');
+    if(typeof FileReader == 'undefined'){
+      result.innerHTML = "<p>抱歉，你的浏览器不支持FileReader</p>" ,
+      file.setAttribute('disabled','disabled');
+
+    }
+    function readAsDataURl(){
+      var file = document.getElementById("file").files[0];
+      if(!/image\/\w+/.test(file.type)){
+        alert('请保证文件类型为图片');
+        return false;
+      }
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function(e){
+        var result = document.getElementById('result');
+        console.log(this.result);
+        result.innerHTML = '<img src="' + this.result + '" />'
+      }
+    }
+    function readAsBinaryArray(){
+      var file = document.getElementById("file").files[0];
+      if(!/image\/\w+/.test(file.type)){
+        alert("请保证文件类型为图片")
+        return false;
+      }
+      var reader = new FileReader();
+      reader.readAsBinaryString(file);
+      reader.onload = function(e){
+        var result = document.getElementById('result');
+        result.innerHTML = this.result;
+      }
+    }
+    function readAsText(){
+      var file = document.getElementById("file").files[0];
+      if(!/image\/\w+/.test(file.type)){
+        alert("请保证文件类型为图片")
+        return false;
+      }
+      var reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = function(e){
+        var result = document.getElementById('result');
+        result.innerHTML = this.result;
+      }
+    }
+    
+</script>
+<body>
+  <p>
+    <label for="">请选择一个文件</label>
+    <input type="file" id="file" />
+    <input type="button" value="读取图像" onclick="readAsDataURl()" />
+    <input type="button" value="读取二进制文件" onclick="readAsBinaryArray()" />
+    <input type="button"  value="读取文本文件" onclick="readAsText()" />
+  </p>
+  <div id="result" name="result">
+
+  </div>
+</body>
+</html>
