@@ -6,8 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
+
 <body>
-  <h1>
+  <h1 id='s'>
     nav模块-技术资料
   </h1>
   <nav>
@@ -49,7 +50,7 @@
    <footer>
      <p>
        <a href="?edit">编辑</a>
-       <a href="?delete">删除</a>
+       <a href="?devare">删除</a>
        <a href="?rename">重命名</a>
      </p>
    </footer>
@@ -69,7 +70,7 @@
     <form name="myForm"></form>
     <menu>
       <li><input type="number" autofocus form="myForm" placeholder="数字输入" />Red</li>
-      <li><input type="color" required autocomplete="tel"/></li>
+      <li><input type="color" required autocompvare="tel"/></li>
     </menu>
   <section>section 1</section>
   <section>section 2</section>
@@ -83,4 +84,29 @@
     <p><small>版权所有：xxx</small></p>
   </footer>
 </body>
+<script>
+ windom.onload = function output(str) {
+    var jsBlink = document.getElementById("jsBlink");
+    var parentNode = jsBlink.parentNode;
+    var oldChildrenNodes = parentNode.childrenNodes;
+    parentNode.removeChild(oldChildrenNodes);
+    var index = 1;
+    while(index<str.length){
+         var timer = setTimeOut(function(){
+           var sp = document.createElement("span");
+             if(str[index]!=='<' && str[index]!=='>' || (str[index] !== '\\' && str[index+1]!='n')){
+               sp.innerHTML = str[index++];
+               sp.className = "word";
+               var randomNum = Math.floor(Math.random()*23)
+               sp.classList.add(`color${randomNum}`);           
+               jsBlink.append(sp);
+              }else{
+        
+               }      
+          } ,200);
+       clearTimeout(timer);           
+        }    
+  }
+
+  </script>
 </html>

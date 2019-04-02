@@ -1,0 +1,10 @@
+# canvas元素
+## 绘制元素步骤
+1. 取得canvas元素，document.getElementById
+2. 取得上下文(context),图形上下文是一个封装很多绘图功能的对象
+3. canvas.getContext('canvas')
+4. 填充与绘制边框，填充fill，绘制边缘stroke
+5. 设定绘画样式style
+6. 指定线宽
+7. 指定颜色值
+8. 绘制矩形

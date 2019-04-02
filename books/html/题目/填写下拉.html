@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input list="positions">
+  <datalist id="positions">
+    <option value="广州"></option>
+    <option value="深圳"></option>
+  </datalist>
+  <div style="position:relative;">
+      <select style="width:120px;" onchange="document.getElementById('input').value=this.value">
+        <option value="A类">A类</option>
+        <option value="B类">B类</option>
+        <option value="C类">C类</option>
+        <option value="D类">D类</option>
+      </select>
+      <input id="input" name="input" style="position:absolute;width:99px;height:16px;left:1px;top:2px;border-bottom:0px;border-right:0px;border-left:0px;border-top:0px;">
+    </div>
+</body>
+</html>
