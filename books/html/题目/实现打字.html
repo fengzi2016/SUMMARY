@@ -8,10 +8,10 @@
 </head>
 <style type="text/css">
   .color0{
-    color: aliceblue;
+    color: green;
   }
   .color1{
-    color:antiquewhite;
+    color:gold;
   }
   .color2{
     color:aqua;
@@ -20,7 +20,7 @@
     color:aquamarine
   }
   .color4{
-    color:azure
+    color:red
   }
   .color5{
     color:beige
@@ -72,81 +72,11 @@
 </style>
 <body>
   <div id="jsBlink" class="jsBlink" >ggg</div>
-  <h1 id='s'>
-    nav模块-技术资料
-  </h1>
-  <nav>
-    <ul>
-      <li><a href="/">主页</a></li>
-      <li><a href="/events">开发文档</a></li>
-    </ul>
-  </nav>
-  <article>
-   <header>
-     <h1>HTML5和CSS3的历史</h1>
-     <nav>
-       <li><a href="#HTML5">HTML5的历史</a></li>
-       <li><a href="#CSS3">CSS3的历史</a></li>
-     </nav>
-   </header>
-   <section id="HTML5">
-    <h1>HTML5的历史</h1>
-    <p>descript html5
-      <time datetime = "2019-3-29" pubdate>2019/3/29</time>
-    </p>
-
-    <aside>
-      <h1>名次解释</h1>
-      <dl>
-        <dt>F#</dt>
-        <dt>武士道吼吼哈哈个 i</dt>
-      </dl>
-      <dl>
-          <dt>T#</dt>
-          <dt>武士道吼吼哈哈个 i</dt>
-        </dl>
-    </aside>
-   </section>
-   <section id="CSS3">
-    <h1>CSS3的历史</h1>
-    <p>descript CSS3</p>
-   </section>
-   <footer>
-     <p>
-       <a href="?edit">编辑</a>
-       <a href="?devare">删除</a>
-       <a href="?rename">重命名</a>
-     </p>
-   </footer>
-  </article>
-
-
-
-  <header>this is header</header>
-    <h2>可编辑列表</h2>
-    <div contenteditable="true">div</div>
-    <ul contenteditable="true">
-      <li>列表元素1</li>
-      <li>列表元素2</li>
-      <li>列表元素3</li>
-    </ul>
-    <nav>this is nav</nav>
-    <form name="myForm"></form>
-    <menu>
-      <li><input type="number"  form="myForm" placeholder="数字输入" />Red</li>
-      <li><input type="color" required autocompvare="tel"/></li>
-    </menu>
-  <section>section 1</section>
-  <section>section 2</section>
-  <article>this is an article</article>
-  <aside>this is an aside</aside>
-  <canvas height="200" width="200"></canvas>
-  <footer>
-    <address>
-      <a href="www.baidu.com" title="文章作者：疯子">疯子发表于<time datetime="2019-3-30">2019年3月29日</time></a>
-    </address>
-    <p><small>版权所有：xxx</small></p>
-  </footer>
+  <div>
+   <h1>在本次题目实现上，有很多bug，没有搞定标签输入（原因：异步添加子节点不行），没有搞好光标， 没有搞好settimeout。</h1>
+   <h2>学习结果: textContent, innerHTML, outerHTML, createElement, createTextNode, appendChild
+   </h2>
+  </div>
 </body>
 <script>
  window.onload = function(){
@@ -162,6 +92,7 @@
     var tmpNode = document.createElement('div');
     tmpNode.innerHTML = str;
     var children = tmpNode.childNodes;
+    var count = 1;
     for(let i = 0; i < children.length; i++){
       jsBlink = document.getElementById("jsBlink");
       if(children[i].nodeType === 1){
@@ -170,8 +101,8 @@
         jsBlink =  newParent;
       }
       var words = children[i].textContent;
-        var formatWords = words.replace(/[ ]+/g,"");
-        formatWords.split('').forEach((w,j)=>{
+        // var formatWords = words.replace(/[ ]+/g,"");
+        words.split('').forEach((w,j)=>{
           var display;
           var random = Math.floor(Math.random()*23);
           if(w === '\n'){
@@ -180,16 +111,14 @@
             display = `<span class="word color${random}">${w}</span>`;
           }
         var blink = document.createTextNode(" | ");
-        console.log(jsBlink)
+       
         var timer = setTimeout(function(){
-          console.log(jsBlink)
           var text = document.createElement("span");
           jsBlink.appendChild(text);
           jsBlink.appendChild(blink);
           text.outerHTML = display;
-          console.log(jsBlink)
           clearTimeout(timer);
-        },(i+1)*200*j);
+        }, 200*count);
         var rmTimer = setTimeout(function(){
           jsBlink.removeChild(blink);
           if(j == words.length - 1){
@@ -199,7 +128,7 @@
           jsBlink.appendChild(blinkend);
         }
         clearTimeout(rmTimer);
-        },(i+1)*200*j+200);
+        },200*count++);
       });
      }
 
