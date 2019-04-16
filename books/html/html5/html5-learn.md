@@ -33,6 +33,12 @@ article {
 ```
 - 另外ie8之前的浏览器不支持这些结构元素，所以需要用javascript来创建
 ## 表单
+### 表单的基础知识
+- 元素类型 HTMLFormElement类型，其继承HTMLElement
+| 属性 | 描述 |
+| --- | --- |
+
+
 - 表单元素可以写在任何一个地方，只需要标明form属性
 - 自动验证
   - required 必填
