@@ -16,7 +16,7 @@
 | 表格内容 | caption, col, colgroup, table, tbody, tfoot, th, td, tr, thead |  这里的元素用于创建和处理表格数据。 ||
 | 表单内容 | button, select, input, datalist, form, label, legend, progress, textarea| HTML 提供了许多可一起使用的元素，这些元素能用来创建一个用户可以填写并提交到网站或应用程序的表单||
 | 交互元素 | details, summary, dialog, menu, menuitem | HTML 提供了一系列有助于创建交互式用户界面对象的元素||
-| web组件 | tmeplate, slot, element| 允许创建自定义元素，并如同普通的 HTML 一样使用它们。此外，你甚至可以创建经过自定义的标准 HTML 元素。 ||
+| web组件 | template, slot, element| 允许创建自定义元素，并如同普通的 HTML 一样使用它们。此外，你甚至可以创建经过自定义的标准 HTML 元素。 ||
 - contentedit属性，对可以获得焦点的元素进行编辑
 - 对新的结构元素使用样式，以防止客户端不能支持
 ```css
