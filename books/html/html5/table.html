@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>表单</title>
+</head>
+<body>
+  <form action="post" id="myForm">
+    <ul>
+      <li>
+        <input type="radio" name="color" value="red">Red
+      </li>
+      <li>
+        <input type="radi" name="color" id="green"> Green
+      </li>
+    </ul>
+
+  </form>
+</body>
+<script>
+  // 设置表单元素
+  var form = document.getElementById("myForm");
+  var filed = form.elements[0];
+  filed.value = 'anotherValue';
+  filed.disabled = true;
+  filed.type = "checkbox";
+  // 避免多次提交表单
+  EventUtil.add
+</script>
+</html>
