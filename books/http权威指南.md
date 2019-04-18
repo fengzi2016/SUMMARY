@@ -124,7 +124,7 @@ web结构组件
   - connect(s, < remote IP:port >)创建一个连接本地套接字和远程主机及端口的连接
   - listen(s,...) 标识一个本地套接字，使其可以合法接受连接
   - s2 = accept(s) 等待某人建立一条到本地端口的连接
-  - n = read(s, buffer, n) 尝试从套接字向缓冲区读取n个字节
+  - n = read(s, buffer, n) 尝试套接字从缓冲区读取n个字节
   - n = write(s, buffer, n) 尝试从缓冲区向套接字写入n个字节
   - close 完全关闭tcp连接
   - shutdown(s,< side >)只关闭TCP连接的输入或输出端

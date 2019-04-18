@@ -1,5 +1,27 @@
 # react lifecycle
 
+
+## 生命周期
+- 初始化阶段
+  - defaultProps
+  - constructor
+  - componentWillMount
+    - 此处setState无意义，应该放在state 中
+  - render
+  - componentWillDidmount
+    - 此处setState会导致组件又render一次,一般只有需要拿到组件的位置和高宽的时候才会用
+- 运行中阶段
+  - componentWillReceiveProps
+    - 应该setState，不会造成重复render
+  - shouldComponentUpdate
+    - 禁止调用setState
+  - componentWillUpdate
+    - 禁止调用setState
+  - componentDidUpdate
+    - 除非用了判断否则造成循环
+- 销毁阶段
+  - componentWillUnmount
+    - 执行setState无意义，不会生效
 ## react-lifecycle-methods-diagram
 
 current 
