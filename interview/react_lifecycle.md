@@ -11,6 +11,9 @@
   - componentWillDidmount
     - 此处setState会导致组件又render一次,一般只有需要拿到组件的位置和高宽的时候才会用
 - 运行中阶段
+  - 新生命周期，在初始化和更新的时候都会调用，用来替代componentWillReceiveProps
+   **getDerivedStateFromProps(props,state)**。命名的意思是当一个组件被创建和props被更新的时候会调用
+  - **getSnapshotBeforeUpdate(prevProps, prevState)**能够捕获到一次突变，经常在要拿到实时的dom的位置和大小要用
   - componentWillReceiveProps
     - 应该setState，不会造成重复render
   - shouldComponentUpdate
