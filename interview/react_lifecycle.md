@@ -8,7 +8,7 @@
   - componentWillMount
     - 此处setState无意义，应该放在state 中
   - render
-  - componentWillDidmount
+  - componentDidmount
     - 此处setState会导致组件又render一次,一般只有需要拿到组件的位置和高宽的时候才会用
 - 运行中阶段
   - 新生命周期，在初始化和更新的时候都会调用，用来替代componentWillReceiveProps
