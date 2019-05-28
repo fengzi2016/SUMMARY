@@ -50,3 +50,33 @@
   max-height: 666px;
 }
 ```
+### 动态...
+```html
+<div>正在加载中<dot></dot></div>
+<style>
+
+dot{
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+  text-align: left;
+  vertical-align: -.25em;
+  overflow: hidden; 
+}
+/* '\A'其实指的是换行符中的 LF 字符，其 Unicode
+编码是 000A，在 CSS 的 content 属性中则直接写作'\A'；换行符除了 LF 字符还有 CR 字符，
+其 Unicode 编码是 000D，在 CSS 的 content 属性中则直接写作'\D'。CR 字符和 LF 字符分
+别指回车（CR）和换行（LF），content 字符生成强大之处就在于不仅普通字符随便插，Unicode
+字符也不在话下。 */
+dot::before {
+ display: block;
+ content: '...\A..\A.';
+  white-space: pre-wrap;
+ animation: dot 3s infinite step-start both;
+}
+@keyframes dot {
+ 33% { transform: translateY(-2em); }
+ 66% { transform: translateY(-1em); }
+} 
+</style>
+```
