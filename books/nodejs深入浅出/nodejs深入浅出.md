@@ -41,12 +41,88 @@
 12. 不同平台下，模块的加载生成的文件不同。比如在Unix下，用g++/gcc编译器将源码编译为.so文件，再根据.so文件生成.node文件，再加载.so，并且调用dlopen方法，最后导出给Javascript。而在windows下是用VC++编译源码，生成.dll文件。
 
 ## 二. 异步I/O
-1. 为了弥补单线程无法利用多核CPU的缺点，Node提供了类似前端浏览器中Web Workers的子进程，该子进程可以通过工作进程高效地利用CPU和I/O
+1. 为了弥补单线程无法利用多核CPU的缺点，Node提供了类似前端浏览器中Web Workers的子进程，该子进程可以通过工作进程高效地利用CPU和I/O。
 2. 操作系统对计算机进行了抽象，将所有输入输出设备抽象为文件，内核在进行文件I/O操作时，通过文件描述符进行管理，而文件描述符类似于应用程序与系统内核之间的凭证。
 3. 轮询。由于完整的I/O并没有完成，立即返回的并不是业务层期望的数据，而仅仅是当前调用的状态。为了获取完整的数据，应用程序需要重复调用I/O操作来确认是否完成。
 4. 现实中的异步I/O，通过让部分线程进行阻塞I/O或者非阻塞I/O加轮询技术来完成数据获取，让一个线程进行计算处理，通过线程之间的通信将I/O得到的数据进行传递。
 5. nodejs的单线程只是javascript执行是单线程，在node中无论是unix还是windows平台，内部完成I/O任务的另有线程池。
-## 异步编程
+6. 每次调用process.nextTick()方法，只会将回调函数放入队列中，在下一轮Tick时取出执行，定时器中采用红黑树的操作时间复杂度为O(ln(n))，nextTick()的复杂度为O(1),相比之下，process.nextTick()更高效。
+7. 在具体实现上，process.nextTick()的回调函数保存在一个数组中，setImmediate()的结果则是保存在链表中。在行为上，process.nextTick()在每轮循环中会将数组中的回调函数全部执行完，而setImmediate()在每轮循环中执行链表的一个回调函数。
+## 三. 异步编程
+1. try/catch/final无法捕获到异步I/O异常。
+ - err first 写法。将异常作为回调函数的第一个实参传回，如果为空值，则表明异步调用没有异常抛出。
+ ```js
+  async(function(err,results){})
+  //实现原理
+  var async = function(callback){
+    process.nextTick(function(){
+      var results = something;
+      if(error){
+        return callback(error);
+      }
+      callback(null, results);
+    })
+  }
+ ```
+2. 一种错误的写法.
+```js
+  // 错误原因，如果真的有错误，回调函数会调用2遍
+  try {
+    req.body = JSON.parse(buf, options.reviver);
+    callback();
+  } catch(err) {
+    err.body = buf;
+    err.status = 400;
+    callback(err);
+  }
+  // 正确写法
+  try {
+    req.body = JSON.parse(buf, options.reviver);
+  } catch(err) {
+    err.body = buf;
+    err.status = 400;
+    return callback(err);
+  }
+  callback();
+```
+3. 异步编程的解决方法
+  - 事件发布/订阅模式
+  - Promise/Deferred模式
+  - 流程控制库
+4. promise的实现
+```js
+  var Promise = function() {
+    EventEmitter.call(this);
+  };
+  util.inherits(Promise, EventEmitter);
+  Promise.prototype.then = function(fulfilledHandler, errorHandler, progressHandler) {
+    if(typeof fulfilledHandler === 'function'){
+      this.once('success',fulfilledHandler);
+    }
+    if(typeof errorHandler === 'function'){
+      this.once('error', errorHandler);
+    }
+    if(typeof progressHandler === 'function'){
+      this.on('progress', progressHandler);
+    }
+    return this;
+  }
+  var Deferred = function() {
+    this.state = 'unfulfilled';
+    this.promise = new Promise();
+  };
+  Deffered.prototype.resolve = function(obj) {
+    this.state = 'fulfilled';
+    this.promise.emit('success',obj);
+  };
+  Defferred.prototype.reject = function(err){
+    this.state = 'failed';
+    this.promise.emit('error',err);
+  }
+  Deferred.prototype.progress = function(data){
+    this.promise.emit('progress',data);
+  }
+```
 promise的原理是订阅者模式。
 promise的实现
 ```js
