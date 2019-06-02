@@ -112,6 +112,18 @@
     this.promise = new Promise();
   };
   Deffered.prototype.resolve = function(obj) {
+    var promise = this.promise;
+    var handler;
+    while((handler = promise.queue.shift())){
+      if(handler && handler.fulfilled){
+        var ret = handler.fulfilled(obj);
+        if(ret && ret.isPromise){
+          ret.queue = promise.queue;
+          this.promise = ret;
+          return;
+        }
+      }
+    }
     this.state = 'fulfilled';
     this.promise.emit('success',obj);
   };
@@ -122,6 +134,73 @@
   Deferred.prototype.progress = function(data){
     this.promise.emit('progress',data);
   }
+  var promisify = function(res) {
+    var deferred = new Deferred();
+    var result = '';
+    result.on('data',function(chunk){
+      result += chunk;
+      deferred.progress(chunk);
+    });
+    result.on('err',function(err){
+      deferred.reject(err);
+    });
+    return deferred.promise;
+  }
+  promisify(res).then(function(){},function(err){},function(chunk){})
+  Deferred.prototype.all = function(promises){
+    var count = promises.length;
+    var that = this;
+    var results = [];
+    promises.forEach((promise,i) => {
+      promise.then((data) => {
+        count --;
+        results[i] = data;
+        if(count === 0) this.resolve(results);
+      },(err) => {
+        this.reject(results);
+      });
+    });
+    return this.promise;
+  }
+  // 链氏实现
+  var Deferred = function() {
+    this.promise = new Promise();
+  }
+  // 完成态
+  Deferred.prototype.resolve = function(obj) {
+    var promise = this.promise;
+    var handler;
+    while((handler = promise.queue.shift())){
+      if(handler && handler.fulfilled){
+        var ret = handler.fulfilled(obj);
+        if(ret && ret.isPromise){
+          ret.queue = promise.queue;
+          this.promise = ret;
+          return;
+        }
+      }
+    }
+  }
+  // 失败态
+  Deferred.prototype.reject = function(err){
+    var promise = this.promise;
+    var handler;
+    while((handler = promise.queue.shift())){
+      if(handler && handler.error){
+        var ret = handler.error(err);
+        if(ret && ret.isPromise){
+          ret.queue = promise.queue;
+          this.promise = ret;
+          return;
+        }
+      }
+    }
+  }
+  // 生成回调函数
+  Deferred.prototype.callback = function() {
+    
+  }
+
 ```
 promise的原理是订阅者模式。
 promise的实现
