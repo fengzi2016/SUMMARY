@@ -202,6 +202,45 @@
   }
 
 ```
+
+## connect 中间件机制
+- 中间件容器是数组,req,res在每个中间件中不断传递，并且将得到的结果进行传递。
+- use方法是给数组push数据，listen方法是监听，handle方法处理结果和推动中间件的转移
+```js
+  // 初始化
+  const createServer = () => {
+    const app = (req, res) => {app.handle(req,res)}
+    util.merge(app,proto);
+    util.merge(app,EventEmitter.prototype);
+    app.route = '/';
+    app.stack = [];
+    for(let i = 0; i < arguments.length; i++){
+      app.use(arguments[i]);
+    }
+    return app;
+  }
+
+  // app.use
+  app.use = function(route, fn) {
+    this.stack.push({route:route, handle:fn});
+    return this;
+  }
+  // app.listen
+  app.listen = function() {
+    var server = http.createServer();
+    return server.listen.apply(server,arguments);
+  }
+  // app.handle
+  app.handle = function(req, res, next) {
+    next();
+  }
+  // app.next
+  app.next = function(err) {
+    layer = stack[i++];
+    layer.handle(req, res, next);
+  }
+```
+
 promise的原理是订阅者模式。
 promise的实现
 ```js
