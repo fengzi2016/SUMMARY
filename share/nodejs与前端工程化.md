@@ -228,8 +228,8 @@ ps: 以AMD为例，如何实现类似于Require.js这种模块加载使得开发
 1. 先复习一下AMD规范
    ```js
    // 通过ID来定义
-    define(['add', 'reduce'], function(add, reduce){
-    return function(){...};
+     define("add", [] , function(add){
+        return function(){...};
     });
     // 通过ID来寻找
      require(['add', 'reduce'], function(add, reduce){
