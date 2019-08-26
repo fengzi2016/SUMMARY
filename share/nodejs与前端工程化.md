@@ -40,11 +40,11 @@ var add = require(‘./add’);
     【ps：有需求就有创造】
 
     ```js
-    define([‘add’, ‘reduce’], function(add, reduce){
+    define("add", [] , function(add){
         return function(){...};
     });
 
-    require([‘add’, ‘reduce’], function(add, reduce){
+    require(['add', 'reduce'], function(add, reduce){
         return function(){...};
     });
     ```
