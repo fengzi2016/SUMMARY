@@ -156,11 +156,11 @@ export default function sum(arr){
 
 
 ### 4. 模块核心概念
-1. 如何在nodejs中引入模块？
+#### 4.1. 如何在nodejs中引入模块？
     - 路径分析
     - 文件定位
     - 编译执行
-2. 路径分析
+#### 4.2. 路径分析
 - 模块分类：
     - 核心模块：编译成了二进制文件，node启动时直接加载进内存，不需要文件定位和编译执行
     - 文件模块： 运行时动态加载，加载速度更慢
@@ -174,12 +174,12 @@ export default function sum(arr){
         - 沿路径向上逐级递归，直到根目录下的 node_modules 目录
     - 如果参数字符串不以“./“或”/“开头，而且是一个路径，比如require('example-module/path/to/file')，则将先找到example-module的位置，然后再以它为参数，找到后续路径。
     - 如果指定的模块文件没有发现，Node会尝试为文件名添加.js、.json、.node后，再去搜索。
-3. 文件定位：
+#### 4.3. 文件定位：
 - 文件拓展名分析
     - 如果文件标识不包括文件拓展名，会.js, .json, .node的次序补足拓展名，依次尝试
 - 目标目录和包
     - 如果分析文件时得到的时一个目录，则会去解析当前目录下的package.json，如果没有json文件则index.js, index.json, index.node，如果还没有找到就先找之前的，所有的模块都遍历一遍之后将没有找到的模块文件报错
-4. 模块编译：
+#### 4.4. 模块编译：
 - 每个模块都是一个对象
 ```js
 function Module(id, parent) { 
@@ -216,8 +216,8 @@ function Module(id, parent) {
 
 ### 5. 前端模块化加载器的实现
 **以AMD为例，如何实现类似于Require.js这种模块加载使得开发者只需要引入Require.js就能用AMD定义模块。**
-1. 先复习一下AMD规范
-   ```js
+#### 5.1. 先复习一下AMD规范
+```js
    // 通过ID来定义
      define("add", [] , function(add){
         return function(){...};
@@ -226,19 +226,19 @@ function Module(id, parent) {
      require(['add', 'reduce'], function(add, reduce){
         return function(){...};
     });
-    ```
-2. 如何通过ID来寻找定义过的模块呢？
+```
+#### 5.2. 如何通过ID来寻找定义过的模块呢？
 - 强加规定，加载路由为：basePath + 模块ID + '.js'
 - basePath表示当前项目根目录
 
-3. 加载器的几个功能模块
+#### 5.3. 加载器的几个功能模块
 -  获取加载器所在目录
 -  获取正在加载的脚本
 -  存储和映射别名
 -  定义和存储模块
 -  获取和执行模块及其回调函数
 
-4. getBasePath方法
+#### 5.4. getBasePath方法
 - 适用于静态和动态加载
 - 通过JavaScript运行错误
 - 通过最后一个未加载标签的src来获取加载器的路径
@@ -288,14 +288,14 @@ function Module(id, parent) {
         return src;
     }
 ```
-5. URL处理
+#### 5.5. URL处理
 - 如果请求路由带了防止缓存的hash值
 - 如版本号，时间戳和利用JavaScript Error的行号
 - 为了得到纯净的路由要对url进行处理
 ```js
     url = url.replace(/[?#].*/,"").slice(0, url.lastIndexOf("/")+1);
 ```
-5. 获取当前正在加载的script
+#### 5.6 获取当前正在加载的script
 ```js
     function getCurrentScript(base) {
        var stack;
@@ -325,7 +325,7 @@ function Module(id, parent) {
        }
     }
 ```
-6. 映射，根据别名机制来定义路径
+#### 5.7. 映射，根据别名机制来定义路径
 ```js
 // 普通的映射
     require.config({
@@ -348,18 +348,18 @@ require.config({
     }
 })
 ```
-7. require方法的作用：当依赖列表都加载完毕后，执行用户回调。
-8. require方法的加载过程
+#### 5.8. require方法的作用：当依赖列表都加载完毕后，执行用户回调。
+#### 5.9. require方法的加载过程
 - 取得依赖列表的ID，转化为URL
 - 检查此模块有没有被加载过，或正在被加载。需要一个对象保存所有模块的状态。
 - 如果出现循环加载，则第二个加载的模块将得到第一模块未加载完的状态，等第二模块加载完之后再加载第一个模块。
 - 创建script节点，绑定onerror, onload, onreadychange等事件判断是否加载成功，然后添加href并插入DOM文档，进行加载
 - 将模块的URL，依赖列表等构建成一个对象，放到检测队列中，在上面的事件触发时进行检测
-9. require方法的拆分
+#### 5.10. require方法的拆分
 - 转化ID为URL根据URL加载模块 【loadJSCSS】
 - 检测模块的依赖情况，如果模块没有任何依赖或state都为2，就执行对应的加载工作【checkDeps】
 - 从modules中收集各模块的返回值，执行回调函数，完成模块的安装【fireFactory】
-10. loadJSCSS模块 获取和解析路径
+#### 5.11. loadJSCSS模块 获取和解析路径
 - 根据特殊标识符返回
 - 根据别名映射
 - 根据路径的类型拼接出完整路径
@@ -454,7 +454,7 @@ function loadJSCSS(url, parent, ret, shim) {
 }
 
 ```
-11. loadJS模块 加载JS代码
+#### 5.12. loadJS模块 加载JS代码
 - 创建script标签
 - 对script标签的加载状态进行监听
 - 如果加载成功且则执行回调
@@ -491,7 +491,7 @@ function loadJS(url, callback) {
     head.insertBefore(node, head.firstChild);
 }
 ```
-12. checkFial方法主要用于开发调试
+#### 5.13. checkFial方法主要用于开发调试
 - javascirpt文件从加载到解析到执行有一个过程几个阶段
 - 在interact阶段 js代码已经有一部分可以执行了
 - 此时将模块对象的状态转化为1
@@ -512,7 +512,7 @@ function loadJS(url, callback) {
         }
     }
 ```
-13. checkDeps方法检测模块的依赖情况
+#### 5.14. checkDeps方法检测模块的依赖情况
 - 在用户加载模块之前以及script.onload后各执行一次
 - 如果模块没有任何依赖或state都为2，就调用fireFactory方法
 ```js
@@ -534,7 +534,7 @@ function loadJS(url, callback) {
      }
  }
 ```
-13. fireFactory方法处理加载后的事情
+#### 5.15. fireFactory方法处理加载后的事情
 - 从modules中收集各模块的返回值
 - 执行回调函数
 - 完成模块的安装
@@ -557,7 +557,7 @@ function loadJS(url, callback) {
         return ret;
     }
 ```
-14. require方法 
+#### 5.16. require方法 
 - 初始化存储模块对象
 - 拿出一个模块
 - 记录模块的路径和状态
@@ -611,7 +611,7 @@ window.require = $.require = function(list, factory, parent) {
     checkDeps();
 }
 ```
-15. 定义模块define
+#### 5.17. 定义模块define
 - 获取id所代表的模块
 - 如果已经加载则判断是否循环
 - 如果循环则报错无法执行
@@ -670,7 +670,7 @@ window.require = $.require = function(list, factory, parent) {
 
 ### 6. V8如何执行javascript
 
-#### 1. JS引擎执行过程
+#### 6.1. JS引擎执行过程
 - 源代码-→抽象语法树AST-→字节码-→JIT-→本地代码
 - V8引擎没有中间字节码
 - JIT优化编译
@@ -690,7 +690,7 @@ window.require = $.require = function(list, factory, parent) {
         -  执行过程将会回到解释器或者基线编译器
 
 
-#### 2. 代码如何被被执行
+#### 6.2. 代码如何被被执行
 - 1. 定义表达式
 ```haskell
 表达式定义
@@ -714,11 +714,11 @@ window.require = $.require = function(list, factory, parent) {
 乘除法表达式 = 数字 || 乘除法表达式 * 数字 || 乘除法表达式 / 数字
 
 ```
-- 2. 源代码
+#### 6.3. 源代码
 ```js
 1 + 2 * 3
 ```
-- 3. 生成TOKEN
+#### 6.4. 生成TOKEN
 ```js
   
   var token = [];
@@ -786,7 +786,7 @@ var tokens = [{
 }];
 
 ```
-- 4. 处理Token
+#### 6.5. 处理Token
 
 ```js
 // <Expression> ::= 
@@ -922,7 +922,7 @@ console.log(ast);
 
 
 ```
-- 5. 生成ast
+#### 6.6. 生成ast
 ```json
 {"type":"Expression",
     "children":[
@@ -985,7 +985,7 @@ console.log(ast);
     ]
 }
 ```
-- 6. 根据ast解释执行
+#### 6.7 根据ast解释执行
 ```js
 
 function evaluate(node) {
