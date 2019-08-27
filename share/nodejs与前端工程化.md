@@ -1,23 +1,33 @@
-## 架构
-### 1.为什么要讲模块化？
+# 浅谈前端模块化
+## 目录
+1. 为什么要讲模块化
+2. 为什么需要模块化
+3. 前端模块化的历史
+4. 模块化核心概念
+5. 前端模块化加载器的实现
+6. 模块化代码加载执行
+7. 模块化开发
+8. 模块化开发优化
+9. 模块化开发未来
+## 1.为什么要讲模块化
 在阅读多本书籍中寻找共同点，并且将它们中相关的知识串联到一起，从而完善知识链。
-### 2.为什么需要模块化
+## 2.为什么需要模块化
 - 避免命名冲突
 - 便于依赖管理
 - 利于性能优化
 - 提高可维护性
 - 利于代码复用
-### 3.前端模块化的历史
-- 内嵌script标签
+## 3.前端模块化的历史
+### 3.1 内嵌script标签
 ```html
  <script></script>
 ```
-- 外联script标签
+### 3.2 外联script标签
 ```html
 <script src="xxx"></script>
 ```
-> 以上两者都有一个问题，污染全局环境，必须注意依赖引入顺序，内嵌标签还无法复用
-- 对象和立即执行函数
+**前两者的缺点：污染全局环境，必须注意依赖引入顺序，内嵌标签还无法复用**
+### 3.3 对象和立即执行函数：应用函数作用域来解决命名冲突
 ```js
 var myApp = {};
 (function(){
@@ -26,19 +36,21 @@ var myApp = {};
   }  
 })();
 ```
-> 应用函数作用域来解决命名冲突，但仍然污染全局环境，而且需要注意依赖引入顺序
-- commonJS
+**缺点：污染全局环境，而且需要注意依赖引入顺序**
+### 3.4 CommonJS
 ```js
 module.exports = function add(a, b){
   return a+b;
 }
 var add = require(‘./add’);
 ```
-> 无法支持异步加载，只适合nodejs环境
-- AMD ，全称 Asynchronous Module Definition，支持异步加载
-
-    【ps：有需求就有创造】
-
+**缺点：无法支持异步加载，只适合nodejs环境**
+### 3.5 AMD全称 Asynchronous Module Definition
+ - 在使用AMD之前需要引入Require.js
+    ```html
+    <script data-main=”main” src=”require.js”></script>
+    ```
+ - 支持异步加载
     ```js
     define("add", [] , function(add){
         return function(){...};
@@ -48,17 +60,13 @@ var add = require(‘./add’);
         return function(){...};
     });
     ```
-    - 在使用AMD之前需要引入Require.js
-    ```html
-    <script data-main=”main” src=”require.js”></script>
-    ```
-> 语法冗长
-> 参数太多
-> 每一个文件都需要请求一次，影响效率
+**缺点: 语法冗长, 参数太多, 每一个文件都需要请求一次，影响效率**
 
-- Browserify插件，让CommonJS可以应用到浏览器中，它遍历了代码中的所有依赖树并且将它们打包为一个文件, 打包之后的样子：
+### 3.6 Browserify插件
+- 让CommonJS可以应用到浏览器中
+- 它遍历了代码中的所有依赖树并且将它们打包为一个文件,
+- 模块打包之后的样子：
 ```js
-
 function e(t,n,r){
     function s(o,u){
         if(!n[o]){
@@ -112,8 +120,9 @@ module.exports = function(arr){
 },{"./add":1,"./reduce":3}]},{},[2]);
 
 ```
-从代码可以看出Browserify主要是将文件中的代码集合起来，对文件的暴露对象exports进行了处理
-- UMD 全称Universal Module Definition，为了让开发者解决不同的库用了不同的模块化方式而导致的问题
+- 从代码可以看出Browserify主要是将文件中的代码集合起来，对文件的暴露对象exports进行了处理
+### 3.7 UMD 全称Universal Module Definition
+- 为了让开发者解决不同的库用了不同的模块化方式而导致的问题
 ```js
     //sum.umd.js
 (function (root, factory) {
@@ -136,40 +145,21 @@ module.exports = function(arr){
     }
 }));
 ```
-
-
-- es6模块语法
+### 3.8 es6模块语法
 ```js
 import sum from "./sum";
 export default function sum(arr){
     return reduce(arr, add);
 }
 ```
-> 没有被所有浏览器支持，目前都需要babel转译
+**缺点：没有被所有浏览器支持，目前都需要babel转译**
 
-- webpack
-    - 逆向模块化，通过配置将模块化的文件插入到HTML中
-    - 支持commonJS和AMD，如果引入babel loader还可以支持es6
-    - code split，多模块组合成一个bundle或多个bundle
-    - loaders， 支持将css，html for template img 模块化处理
-    - plugin，对bundle进行处理比如添加对bundle源映射并将捆绑包分割成块，压缩bundle等。
-- Rollup，支持es6模块化，只打包用到的函数，减少了包的体积，
-- SystemJS，支持在浏览器和nodejs中动态模块，包括 CommonJS, AMD, global object 和 ES6 modules，还可以用loader让它支持CoffeeScript and TypeScript.
-```js
-    System.import('module-name');
-    System.config({
-        transplier: 'babel',
-        baseURL: '/app'
-    });
-```
-- 
+
 ### 4. 模块核心概念
 1. 如何在nodejs中引入模块？
     - 路径分析
     - 文件定位
     - 编译执行
-    - 优先从缓存中加载，nodejs缓存编译和执行后的对象
-
 2. 路径分析
 - 模块分类：
     - 核心模块：编译成了二进制文件，node启动时直接加载进内存，不需要文件定位和编译执行
@@ -211,7 +201,9 @@ function Module(id, parent) {
     - .json文件，通过fs读取后在JSON.parse解析
     - 其他文件都当作js文件来加载
 - javascript模块的编译
-    - 在编译过程中对文件内的代码进行包装，在首部添加(function (exports, require, module, __filename, __dirname) {\n，在尾部添加\n})
+    - 在编译过程中对文件内的代码进行包装
+    - 在首部添加(function (exports, require, module, __filename, __dirname) {\n
+    - 在尾部添加\n})
     ```js
         (function (exports, require, module, __filename, __dirname) { 
                 var math = require('math');
@@ -222,9 +214,8 @@ function Module(id, parent) {
     ```
     - 作用域隔离，最后返回一个函数对象，这个包装将当前的模块对象exports属性，require方法，模块自身以及文件的定位，文件目录作为参数传递给返回的函数进行执行。
 
-
-### 前端模块化加载器的实现
-ps: 以AMD为例，如何实现类似于Require.js这种模块加载使得开发者只需要引入Require.js就能用AMD定义模块。
+### 5. 前端模块化加载器的实现
+**以AMD为例，如何实现类似于Require.js这种模块加载使得开发者只需要引入Require.js就能用AMD定义模块。**
 1. 先复习一下AMD规范
    ```js
    // 通过ID来定义
@@ -237,9 +228,20 @@ ps: 以AMD为例，如何实现类似于Require.js这种模块加载使得开发
     });
     ```
 2. 如何通过ID来寻找定义过的模块呢？
-> 强加规定，加载路由为：basePath + 模块ID + '.js'
+- 强加规定，加载路由为：basePath + 模块ID + '.js'
+- basePath表示当前项目根目录
 
-3. getBasePath方法，通过Javasript运行错误或者获取最后一个未加载标签的src来获取获取加载器的路径
+3. 加载器的几个功能模块
+-  获取加载器所在目录
+-  获取正在加载的脚本
+-  存储和映射别名
+-  定义和存储模块
+-  获取和执行模块及其回调函数
+
+4. getBasePath方法
+- 适用于静态和动态加载
+- 通过JavaScript运行错误
+- 通过最后一个未加载标签的src来获取加载器的路径
 ```js
 
     // 适用于静动态加载
@@ -285,10 +287,11 @@ ps: 以AMD为例，如何实现类似于Require.js这种模块加载使得开发
         const src = document.querySeletor ? node.src : node.getAttribute('src', 4);
         return src;
     }
-
-
 ```
-4. 如果请求路由带了防止缓存的hash值如版本号，时间戳和利用JavaScript Error的行号，为了得到纯净的路由要对url进行处理。
+5. URL处理
+- 如果请求路由带了防止缓存的hash值
+- 如版本号，时间戳和利用JavaScript Error的行号
+- 为了得到纯净的路由要对url进行处理
 ```js
     url = url.replace(/[?#].*/,"").slice(0, url.lastIndexOf("/")+1);
 ```
@@ -322,7 +325,7 @@ ps: 以AMD为例，如何实现类似于Require.js这种模块加载使得开发
        }
     }
 ```
-7. 映射，根据别名机制来定义路径
+6. 映射，根据别名机制来定义路径
 ```js
 // 普通的映射
     require.config({
@@ -345,20 +348,24 @@ require.config({
     }
 })
 ```
-5. require方法的作用：当依赖列表都加载完毕后，执行用户回调。
-6. require方法的加载过程
+7. require方法的作用：当依赖列表都加载完毕后，执行用户回调。
+8. require方法的加载过程
 - 取得依赖列表的ID，转化为URL
 - 检查此模块有没有被加载过，或正在被加载。需要一个对象保存所有模块的状态。
 - 如果出现循环加载，则第二个加载的模块将得到第一模块未加载完的状态，等第二模块加载完之后再加载第一个模块。
 - 创建script节点，绑定onerror, onload, onreadychange等事件判断是否加载成功，然后添加href并插入DOM文档，进行加载
 - 将模块的URL，依赖列表等构建成一个对象，放到检测队列中，在上面的事件触发时进行检测
-8. require方法的拆分
+9. require方法的拆分
 - 转化ID为URL根据URL加载模块 【loadJSCSS】
 - 检测模块的依赖情况，如果模块没有任何依赖或state都为2，就执行对应的加载工作【checkDeps】
 - 从modules中收集各模块的返回值，执行回调函数，完成模块的安装【fireFactory】
-å
+10. loadJSCSS模块 获取和解析路径
+- 根据特殊标识符返回
+- 根据别名映射
+- 根据路径的类型拼接出完整路径
+- 不符合规则则退出
+- 如果一个module\[src]没有state属性表示其正在加载中
 ```js
-
 function loadJSCSS(url, parent, ret, shim) {
     // 1. 特别处理mass | ready 标识符
     if(/^(mass|ready)$/.test(url)) {
@@ -447,8 +454,11 @@ function loadJSCSS(url, parent, ret, shim) {
 }
 
 ```
-- 如果一个module[ src ]没有state属性表示其正在加载中
-
+11. loadJS模块 加载JS代码
+- 创建script标签
+- 对script标签的加载状态进行监听
+- 如果加载成功且则执行回调
+- 如果无法加载成功则处理死
 ```js
 // loadJS 加载JS
 function loadJS(url, callback) {
@@ -481,7 +491,12 @@ function loadJS(url, callback) {
     head.insertBefore(node, head.firstChild);
 }
 ```
-- checkFial方法主要用于开发调试。javascirpt文件从加载到解析到执行需要一个过程，再interact阶段，js代码已经有一部分可以执行了，此时将模块对象的状态转化为1，如果模块的state依旧是undefined则认为它是死链，并且将此节点移除。
+12. checkFial方法主要用于开发调试
+- javascirpt文件从加载到解析到执行有一个过程几个阶段
+- 在interact阶段 js代码已经有一部分可以执行了
+- 此时将模块对象的状态转化为1
+- 如果模块的state依旧是undefined则认为它是死链，并且将此节点移除。
+
 ```js
     function checkFail(node, onError) {
         var id = node.src // 检测是否死链
@@ -497,7 +512,9 @@ function loadJS(url, callback) {
         }
     }
 ```
-- checkDeps方法在用户加载模块之前以及script.onload后各执行一次，检测模块的依赖情况，如果模块没有任何依赖或state都为2，就调用fireFactory方法
+13. checkDeps方法检测模块的依赖情况
+- 在用户加载模块之前以及script.onload后各执行一次
+- 如果模块没有任何依赖或state都为2，就调用fireFactory方法
 ```js
  function checkDeps() {
      for(var i = loadings.length, id; id = loadings[--i];) {
@@ -517,7 +534,10 @@ function loadJS(url, callback) {
      }
  }
 ```
-- fireFactory方法，从modules中收集各模块的返回值，执行factory，完成模块的安装
+13. fireFactory方法处理加载后的事情
+- 从modules中收集各模块的返回值
+- 执行回调函数
+- 完成模块的安装
 ```js
     function fireFactory(id, deps, factory) {
         // 收集当前模块的所有依赖模块的返回值
@@ -537,6 +557,14 @@ function loadJS(url, callback) {
         return ret;
     }
 ```
+14. require方法 
+- 初始化存储模块对象
+- 拿出一个模块
+- 记录模块的路径和状态
+- 如果已经加载好了所有模块则触发回调函数
+- 如果只是加载好了一个则对需要加载的队列进行更新
+- 继续检查其他依赖
+
 ```js
 window.require = $.require = function(list, factory, parent) {
     // 检测依赖是否都为2
@@ -583,9 +611,12 @@ window.require = $.require = function(list, factory, parent) {
     checkDeps();
 }
 ```
-9. 定义模块define
-- 拆分difine方法
-    - 检测是否循环【checkCycle】
+15. 定义模块define
+- 获取id所代表的模块
+- 如果已经加载则判断是否循环
+- 如果循环则报错无法执行
+- 如果没有循环则调用require进行加载
+- 如果未加载则将回调函数进行存储
 ```js
  window.define =  $.define = function(id, deps, factory) {
      var args = $.slice(arguments);
@@ -637,88 +668,57 @@ window.require = $.require = function(list, factory, parent) {
 ```
 
 
-## V8如何执行javascript
-1. 浏览器是如何渲染网页的
-![渲染过程](https://pic4.zhimg.com/v2-ad0a86d3faf223164a9bd22658feadc3_r.jpg)
-2. 浏览器渲染过程
-- WebKit调用资源加载器加载相应资源；
-- 加载器依赖网络模块建立连接，发送请求并接收答复；
-- WebKit接收各种网页或者资源数据，其中某些资源可能同步或异步获取；
-- 网页交给HTML解析器转变为词语；
-- 解释器根据词语构建节点，形成DOM树；
-- 如果节点是JavaScript代码，调用JavaScript引擎解释并执行；
-- JavaScript代码可能会修改DOM树结构；
-如果节点依赖其他资源，如图片\css、视频等，调用资源加载器加载它们，但这些是异步加载的，不会阻碍当前DOM树继续创建；如果是JavaScript资源URL（没有标记异步方式），则需要停止当前DOM树创建，直到JavaScript加载并被JavaScript引擎执行后才继续DOM树的创建。
+### 6. V8如何执行javascript
 
-3. JavaScript引擎
+#### 1. JS引擎执行过程
+- 源代码-→抽象语法树AST-→字节码-→JIT-→本地代码
+- V8引擎没有中间字节码
+- JIT优化编译
+    - 监视器
+        - 记录代码如何运行和运行次数
+        - 如果同一行代码运行了几次，这个代码段就被标记成了 warm
+        - 如果运行了很多次，则被标记成 hot
+    - 基线编译器
+        - 如果一段代码变成了 “warm”，那么 JIT 就把它送到基线编译器去编译，并且把编译结果存储起来。
+        - 再次使用时就会把编译后的版本，替换这一行代码的执行，并且存储。
+    - 优化编译器
+        - 生成一个更快速和高效的代码版本出来，并且存储
+        - 例如：循环加一个对象属性时，假设它是 INT 类型，优先做 INT 类型的判断
+    - 去优化
+        -  前 99 个对象属性保持着 INT 类型，可能第 100 个不是
+        -  把优化的代码丢掉
+        -  执行过程将会回到解释器或者基线编译器
 
-对于常见编译型语言（例如：Java）来说，
-编译步骤分为：词法分析->语法分析->语义检查->代码优化和字节码生成。
 
-对于解释型语言（例如 JavaScript）来说
-，通过词法分析 -> 语法分析 -> 语法树，就可以开始解释执行了。
-![js引擎](https://pic1.zhimg.com/v2-0f5471e21a25e237dcfae2d34a306788_r.jpg)
-
-4. JS引擎执行过程
-
-源代码-→抽象语法树AST-→字节码-→JIT-→本地代码(V8引擎没有中间字节码)。
-- 0. 定义表达式
+#### 2. 代码如何被被执行
+- 1. 定义表达式
 ```haskell
+表达式定义
 <Expression> ::= 
     <AdditiveExpression><EOF>
+表达式 = 加减法表达式EOF
 
+
+加减法表达式定义
 <AdditiveExpression> ::= 
     <MultiplicativeExpression>
     |<AdditiveExpression><+><MultiplicativeExpression>
     |<AdditiveExpression><-><MultiplicativeExpression>
+加减法表达式 = 乘法表达式 || 加减法表达式 + 乘法表达式 || 加减法表达式 - 乘法表达式
 
+乘除法表达式定义
 <MultiplicativeExpression> ::= 
     <Number>
     |<MultiplicativeExpression><*><Number>
     |<MultiplicativeExpression></><Number>
+乘除法表达式 = 数字 || 乘除法表达式 * 数字 || 乘除法表达式 / 数字
 
 ```
-- 1. 源代码
+- 2. 源代码
 ```js
 1 + 2 * 3
 ```
-- 2. 抽象生成AST
-
-```js
-{
-    "type": "Program",
-    "body": [
-        {
-            "type": "ExpressionStatement",
-            "expression": {
-                "type": "BinaryExpression",
-                "operator": "+",
-                "left": {
-                    "type": "Literal",
-                    "value": 1,
-                    "raw": "1"
-                },
-                "right": {
-                    "type": "BinaryExpression",
-                    "operator": "*",
-                    "left": {
-                        "type": "Literal",
-                        "value": 2,
-                        "raw": "2"
-                    },
-                    "right": {
-                        "type": "Literal",
-                        "value": 3,
-                        "raw": "3"
-                    }
-                }
-            }
-        }
-    ],
-    "sourceType": "script"
-}
-
-```
+- 3. 生成TOKEN
 ```js
   
   var token = [];
@@ -765,9 +765,7 @@ for(var c of input.split(''))
 
 state('EOF')
 
-```
-- 3. 生成Token
-```js
+
 var tokens = [{
     type:"Number",
     value: "1024"
@@ -789,40 +787,10 @@ var tokens = [{
 
 ```
 - 4. 处理Token
-```haskell
-<AdditiveExpression> ::= 
-    <MultiplicativeExpression>
-    |<AdditiveExpression><+><MultiplicativeExpression>
-    |<AdditiveExpression><-><MultiplicativeExpression>
-```
-```js
-function AdditiveExpression(source){
-    if(source[0].type === "MultiplicativeExpression") {
-        let node = {
-            type:"AdditiveExpression",
-            children:[source[0]]
-        }
-        source[0] = node;
-        return node;
-    } 
-    if(source[0].type === "AdditiveExpression" && source[1].type === "+") {
-        let node = {
-            type:"AdditiveExpression",
-            operator:"+",
-            children:[source.shift(), source.shift(), MultiplicativeExpression(source)]
-        }
-        source.unshift(node);
-    }
-    if(source[0].type === "AdditiveExpression" && source[1].type === "-") {
-        let node = {
-            type:"AdditiveExpression",
-            operator:"-",
-            children:[source.shift(), source.shift(), MultiplicativeExpression(source)]
-        }
-        source.unshift(node);
-    }
-}
 
+```js
+// <Expression> ::= 
+//     <AdditiveExpression><EOF>
 function Expression(source){
     if(source[0].type === "AdditiveExpression" && source[1] && source[1].type === "EOF" ) {
         let node = {
@@ -835,6 +803,11 @@ function Expression(source){
     AdditiveExpression(source);
     return Expression(source);
 }
+// <AdditiveExpression> ::= 
+//     <MultiplicativeExpression>
+//     |<AdditiveExpression><+><MultiplicativeExpression>
+//     |<AdditiveExpression><-><MultiplicativeExpression>
+
 function AdditiveExpression(source){
     if(source[0].type === "MultiplicativeExpression") {
         let node = {
@@ -875,6 +848,11 @@ function AdditiveExpression(source){
     MultiplicativeExpression(source);
     return AdditiveExpression(source);
 }
+
+// <MultiplicativeExpression> ::= 
+//     <Number>
+//     |<MultiplicativeExpression><*><Number>
+//     |<MultiplicativeExpression></><Number>
 function MultiplicativeExpression(source){
     if(source[0].type === "Number") {
         let node = {
@@ -944,7 +922,70 @@ console.log(ast);
 
 
 ```
-- 5. 解释执行
+- 5. 生成ast
+```json
+{"type":"Expression",
+    "children":[
+        {
+            "type":"AdditiveExpression",
+            "operator":"+",
+            "children":[
+                {
+                    "type":"AdditiveExpression",
+                    "children":[
+                        {
+                            "type":"MultiplicativeExpression","operator":"*",
+                            "children":[
+                                {
+                                    "type":"MultiplicativeExpression","children":[
+                                        {"type":"Number","value":"3"}
+                                    ]
+                                },
+                                {
+                                    "type":"*",
+                                    "value":"*"
+                                },
+                                {
+                                    "type":"Number",
+                                    "value":"300"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {   "type":"+",
+                    "value":"+"
+                },
+                {
+                    "type":"MultiplicativeExpression",
+                    "operator":"*",
+                    "children":[
+                        {
+                            "type":"MultiplicativeExpression",
+                            "children":[
+                                {
+                                    "type":"Number",
+                                    "value":"2"
+                                }
+                            ]
+                        },
+                        {
+                            "type":"*",
+                            "value":"*"
+                        },
+                        {
+                            "type":"Number",
+                            "value":"256"
+                        }
+                    ]
+                }
+            ]
+        },
+        {"type":"EOF"}
+    ]
+}
+```
+- 6. 根据ast解释执行
 ```js
 
 function evaluate(node) {
@@ -975,27 +1016,20 @@ function evaluate(node) {
 }
 
 ```
-- 6. JIT优化编译
-    - 原因：在生成 AST 之后，就开始一边解释，边执行，但是有个弊端，当某段代码被多次执行时，它就有了可优化的空间（比如类型判断优化），而不用一次次的去重复之前的解释执行。 编译型语言如 JAVA，可以在执行前就进行优化编译，但是这会耗费大量的时间，显然不适用于Web交互。
-    - 流程
-        1.在 JavaScript 引擎中增加一个监视器（也叫分析器）。监视器监控着代码的运行情况，记录代码一共运行了多少次、如何运行的等信息，如果同一行代码运行了几次，这个代码段就被标记成了 “warm”，如果运行了很多次，则被标记成 “hot”。
 
-        2.（基线编译器）如果一段代码变成了 “warm”，那么 JIT 就把它送到基线编译器去编译，并且把编译结果存储起来。比如，监视器监视到了，某行、某个变量执行同样的代码、使用了同样的变量类型，那么就会把编译后的版本，替换这一行代码的执行，并且存储。
-
-        3.（优化编译器）如果一个代码段变得 “hot”，监视器会把它发送到优化编译器中。生成一个更快速和高效的代码版本出来，并且存储。例如：循环加一个对象属性时，假设它是 INT 类型，优先做 INT 类型的判断
-
-        4.（去优化）可是对于 JavaScript 从来就没有确定这么一说，前 99 个对象属性保持着 INT 类型，可能第 100 个就没有这个属性了，那么这时候 JIT 会认为做了一个错误的假设，并且把优化代码丢掉，执行过程将会回到解释器或者基线编译器，这一过程叫做去优化。
-
-
-
-## 模块化开发
+### 7. 模块化开发
 - 独立的算法和单元
 - 分模块加载问题
     - 重复代码只加载一次
     - 多次复用的代码进行缓存
     - 文件次序，反向插入思想
 - webpack中的模块化
-- 将JS资源视为一切资源的入口，将项目构建输出的js和css逆向注入到文档中
+    - 逆向模块化，通过配置将模块化的文件插入到HTML中
+    - 支持commonJS和AMD，如果引入babel loader还可以支持es6
+    - code split，多模块组合成一个bundle或多个bundle
+    - loaders， 支持将css，html for template img 模块化处理
+    - plugin，对bundle进行处理比如添加对bundle源映射并将捆绑包分割成块，压缩bundle等。
+    - 将JS资源视为一切资源的入口，将项目构建输出的js和css逆向注入到文档中
     ```js
         new HtmlWebpackPlugin({
             // 构建输出文件
@@ -1024,6 +1058,16 @@ function evaluate(node) {
             }
         }
     ```
+- Rollup，支持es6模块化，只打包用到的函数，减少了包的体积，
+- SystemJS，支持在浏览器和nodejs中动态模块，包括 CommonJS, AMD, global object 和 ES6 modules，还可以用loader让它支持CoffeeScript and TypeScript.
+```js
+    System.import('module-name');
+    System.config({
+        transplier: 'babel',
+        baseURL: '/app'
+    });
+```
+- 
 ## 前端模块化的未来
 
    
