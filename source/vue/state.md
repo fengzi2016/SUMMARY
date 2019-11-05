@@ -1,7 +1,8 @@
 # 关于State的总结
 - val !== val 是对NaN进行了坚持
 - set 里面的notify
-- defineReactive 方法，定义可变的对象属性
+- 对数组进行监听，通过监听数组是否使用了slice,push,pop等方法
+- defineReactive 方法，双向绑定
 ```js
     const defineReactive = (
         obj, key, val, constomSetter, shallow
@@ -66,7 +67,10 @@
                 Watch: {
                     vm,deep,user,lazy,sync,
                     cb,id,active,dirty,
-                    deps:[],newDeps:[],depIds, newDepIds, expression, value
+                    deps:[],newDeps:[],depIds, newDepIds, expression, value,
+                    get:func => 
+                    addDep: func => dep.addSub
+                    cleanupDep: func,
                     
                 },
                 Observer: {
