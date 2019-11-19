@@ -52,7 +52,26 @@ const style = (el, prop) => {
     el.style[prop] 
 }
 ```
+## ReactiveListener
+1. 概括：初始化某个Lazy.el即Img的加载情况以及各种属性
+2. 主要功能：
 
-- lazyContainer
-- lazyContainerManager
-- lazy
+    1. 属性：初始化，销毁，更新一个图片元素的属性，父元素
+    2. 加载和渲染img：过滤src，提前加载loading图片，根据图片加载状态切换加载图片，缓存，根据位置判断加载时机
+    3. 其他：更新加载后的属性
+
+## Lazy
+1. 概括： 初始化事件监听，管理用户传入的参数，缓存图片
+2. 主要功能：
+    1. 1个Lazy指令管理多个ReactiveListener，初始化，更新，删除特定的ReactiveListener
+    2. Lazy指令与元素的绑定
+    3. 判断加载时机，设置加载回调
+    4. 根据指令参数更新加载路由
+    5. 根据加载状态触发加载回调
+## lazyContainer
+管理Lazy，绑定Lazy和图片的父元素
+## lazyContainerManager
+管理LazyContainer，包括绑定，更新，解绑
+## 利用的数据存储点
+- dataset
+- Vue directive的binding属性
