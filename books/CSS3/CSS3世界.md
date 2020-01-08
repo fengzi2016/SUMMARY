@@ -80,3 +80,50 @@ dot::before {
 } 
 </style>
 ```
+
+### line-height
+- css世界中文字内容是主体，内联元素默认是基线对齐，即x的底部
+- veritcal-align:middle 不是相对容器中分线对齐，而是x基线往上1/2 x-height 高度
+- css世界中文字高度分为
+  - ascender height 上下线高度
+  - cap height 大写字母高度
+  - median 中线
+  - descender height 下行线高度
+- ex 单位表示x的高度，可以用来将图标设置高度为1ex 使其默认的baseline基线与文字对齐
+- 纯内联元素 的高度由line-height 决定
+- 对于块级元素，line-height 对其本身没有任何作用，改变line-height但是块级元素的高度会跟着变是通过改变块级元素里面内联级别元素占据的高度实现的
+- 无论内联元素line-height 如何设置，最终父元素的高度都是由数值大的那个line-height决定
+- 多行文字垂直居中
+```html
+  <div class="box">
+    <div class="content">基于行高实现的</div>
+  </div>
+```
+```css
+.box {
+  line-height: 120px;
+  background-color: red;
+}
+.content {
+  display: inline-block;
+  line-height: 20px;
+  margin: 0 20px;
+  vertical-align: middle
+}
+```
+
+### vertical-align
+- 使用前提： 只能应用于内联元素以及 display 值为table-cell的元素即display 为 inline, inline-block, inline-table, table-cell。默认情况下作用雨 span, strong, em ,img, button, input, td 非html规范自定义标签
+- 
+- 属性值
+  - inherit
+  - 线类: baseline, top, middle, bottom
+  - 文本类: text-top, text-bottom
+  - 上标下标类: sub, super
+  - 数值百分比类: 20px, 2em 20%
+- vertical-align : baseline 等于 vertical-align : 0
+
+### 百分比计算
+- margin padding 相对于宽度计算
+- line-height 相对与 font-size 计算
+- vertical-align 相对于line-height 计算
