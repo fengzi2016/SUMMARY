@@ -1,4 +1,14 @@
 # Base
+## 整体架构
+- Base 基本的history类
+- 根据mode分为：‘hash’，‘history’，‘abstract’三种不同的history子类，并且new 出不同类的实例
+- 每个history子类都实现了父类定义的方法包括
+  - go，去某一次浏览记录
+  - push，将某个path推入到history中
+  - replace，将某个path把当前path代替
+  - ensureURL，确保path可用
+  - getCurrentLocation，返回当前的path
+ 
 ## History
 - 依次调用不同生命周期的监听的回调函数
 - 使用场景：同步=>当有要依次调用的函数,每个函数产生一个函数数组，，数组里的每个函数调用完后要调用同样的回调函数，并且在调用完所有的函数后需要调用一个结束回调函数
@@ -97,3 +107,4 @@
 - 根据name，path进行Map，用了递归
 - routeRecord记录了一个路由的大多数属性
 - 用pathList来记录所有的path
+
