@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../typescript"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../../ant-design-pro"
+		},
+		{
+			"path": "../../../../typescript-exercises"
+		}
+	]
+}
